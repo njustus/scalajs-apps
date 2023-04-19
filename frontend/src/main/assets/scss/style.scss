@@ -1,0 +1,59 @@
+/*
+@import "../../../node_modules/bulma/bulma.sass";
+
+body {
+  background-color: lightgray;
+}
+
+.btn {
+  padding: 0.5em 1.0em;
+  border: none;
+  cursor: pointer;
+}
+
+.tip-calculator {
+  background-color: white;
+  border-color: white;
+  border-radius: 15px;
+  display: flex;
+  justify-content: space-evenly;
+  max-width: 700px;
+  margin: auto;
+  $tip-btn-color: darkviolet;
+
+  .calculator-parent {
+    display: flex;
+    flex-direction: column;
+    width: 50%;
+
+    .row {
+      margin: 0.5em 0.0em;
+      display: flex;
+    }
+  }
+
+  .amount-input {
+    //padding: 0.5em 5em;
+
+    &:focus-visible {
+      border-color: $tip-btn-color;
+    }
+    &:focus {
+      border-color: $tip-btn-color;
+    }
+  }
+
+  .tip-button-group {
+    display: flex;
+    justify-content: space-between;
+  }
+
+  .tip-button {
+    background-color: blueviolet;
+
+    &.active {
+      background-color: lighten($tip-btn-color, 20);
+    }
+  }
+}
+*/
