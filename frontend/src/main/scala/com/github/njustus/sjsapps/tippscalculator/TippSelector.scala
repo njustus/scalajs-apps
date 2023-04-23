@@ -16,7 +16,7 @@ object TippSelector {
     val activeColor = if(props.selectedTipPercentage.contains(tip)) "active" else ""
 
     <.button(s"$percent %",
-      ^.className := s"button is-primary is-outlined ${activeColor}",
+      ^.className := s"button is-info is-outlined ${activeColor}",
       ^.onClick --> props.tipSelected(tip))
   }
 
@@ -24,11 +24,11 @@ object TippSelector {
     val btn = percentButton(props)(_)
 
     <.div(
-      ^.className:="buttons",
+      ^.className:="buttons has-addons is-justify-content-center",
       btn(10),
       btn(20),
       btn(30),
-      btn(50),
+      btn(50)
     )
   }
 

@@ -10,7 +10,7 @@ object Main {
   def main(args: Array[String]): Unit = {
     val root = document.getElementById("parent-root")
     <.div(
-      ^.className := "container",
+      ^.className := "columns is-centered",
       TippsCalculator.component()
     ).renderIntoDOM(root)
   }
