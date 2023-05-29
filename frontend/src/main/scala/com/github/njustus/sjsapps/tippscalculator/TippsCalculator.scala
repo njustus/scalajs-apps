@@ -5,6 +5,7 @@ import japgolly.scalajs.react.vdom.html_<^._
 import org.scalajs.dom.window
 import cats.effect._
 import japgolly.scalajs.react.hooks.Hooks.UseState
+import com.github.njustus.sjsapps.*
 
 object TippsCalculator {
 
@@ -51,7 +52,7 @@ object TippsCalculator {
 
   }
 
-  val component = ScalaFnComponent.withHooks[Unit]
+  val component: PageComponent = ScalaFnComponent.withHooks[Unit]
     .useState(State.zero)
     .render { (_, state) =>
       renderFn(state)

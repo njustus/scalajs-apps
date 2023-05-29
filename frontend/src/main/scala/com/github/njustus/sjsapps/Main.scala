@@ -11,7 +11,7 @@ object Main {
     val root = document.getElementById("parent-root")
     <.div(
       ^.className := "columns is-centered",
-      TippsCalculator.component()
+      PageWrapper.build()
     ).renderIntoDOM(root)
   }
 }
