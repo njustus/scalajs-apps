@@ -11,7 +11,7 @@ object TippsCalculator {
   case class State(totalAmount:BigDecimal,
                    tipPercent:Option[Float]) {
     def tip: Float = tipPercent.getOrElse(1)
-    def tipAmount: BigDecimal = totalAmount*tip
+    def tipAmount: BigDecimal = totalAmount*BigDecimal(tip)
 
     def tipDisplayProps = TipDisplay.Props(totalAmount, tipAmount)
   }
