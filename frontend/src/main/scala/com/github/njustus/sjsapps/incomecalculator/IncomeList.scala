@@ -5,6 +5,10 @@ import japgolly.scalajs.react._
 import japgolly.scalajs.react.vdom.html_<^._
 
 object IncomeList {
+  //TODO group by date
+  //TODO collapse everything besides yearly amount
+  //TOOD display increase in % against previous increase
+  //TODO enable testing increases 'what is 3000€ in % - what are 3%?)
   case class Props(xs:List[Income])
 
   case class State()
