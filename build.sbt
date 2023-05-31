@@ -3,7 +3,7 @@ val circeVersion = "0.14.1"
 val Http4sVersion = "0.23.8"
 
 lazy val commonSettings = Seq(
-  scalaVersion := "3.2.1",
+  scalaVersion := "3.3.0",
   scalacOptions ++= Seq()
 )
 
