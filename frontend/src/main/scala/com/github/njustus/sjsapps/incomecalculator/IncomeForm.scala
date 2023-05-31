@@ -1,6 +1,6 @@
 package com.github.njustus.sjsapps.incomecalculator
 
-import cats.effect.IO
+import cats.effect.SyncIO
 import japgolly.scalajs.react.*
 import japgolly.scalajs.react.vdom.html_<^.*
 
@@ -9,7 +9,7 @@ import java.time.LocalDate
 object IncomeForm {
   private def zero: State = Income.zero
 
-  case class Props()
+  case class Props(addIncome: (x:Income) => SyncIO[Unit])
 
   type State = Income
 
@@ -19,7 +19,7 @@ object IncomeForm {
       interval.toString)
   }.toVdomArray
 
-  private def renderFn(state: Hooks.UseState[State]): VdomNode = {
+  private def renderFn(props: Props, state: Hooks.UseState[State]): VdomNode = {
     def updateAmount(ev:ReactEventFromInput) =
       val value = ev.target.value
       state.modState(_.copy(amount = BigDecimal(value)))
@@ -31,8 +31,6 @@ object IncomeForm {
     def updateSinceDate(ev:ReactEventFromInput) =
       val value = ev.target.value
       state.modState(_.copy(since = LocalDate.parse(value)))
-
-    def addIncome = IO.println(state.value) //TODO zu global state hinzufügen
 
     <.div(^.className:="columns",
       <.input(^.className:="column is-one-quarter input", ^.placeholder:="Amount", ^.onChange ==> updateAmount),
@@ -47,12 +45,12 @@ object IncomeForm {
         ^.onChange ==> updateSinceDate),
       <.button(^.className:="button is-primary",
         "Hinzufügen",
-        ^.onClick --> addIncome
+        ^.onClick --> props.addIncome(state.value)
       )
     )
   }
 
-  val component = ScalaFnComponent.withHooks[Unit]
+  val component = ScalaFnComponent.withHooks[Props]
     .useState(zero)
-    .render((_, st) => renderFn(st))
+    .render((p, st) => renderFn(p, st))
 }
