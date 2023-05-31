@@ -31,7 +31,7 @@ object TippsCalculator {
       state.modState(x => x.copy(totalAmount = BigDecimal(value)))
     }
 
-    <.div(^.className := "mt-6 column is-three-quarters columns is-vcentered",
+    <.div(^.className := "mt-6 column columns is-vcentered",
       <.div(^.className := "column",
         <.div(^.className := "block",
           <.h4(^.className := "title is-4", "Bill"),
