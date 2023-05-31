@@ -8,8 +8,10 @@ object IncomeCalculator {
   case class State()
 
   private def renderFn(state: Hooks.UseState[State]): VdomNode = {
-    <.div(
-      "income-calculator"
+    <.div(^.className:="mt-4 columns",
+      <.div(^.className:="column",
+        IncomeForm.component()
+      )
     )
   }
 
