@@ -49,7 +49,11 @@ object IncomeList {
       <.div(^.className:="card-header",
         <.div(^.className:="card-header-title",
           <.div(^.className:="column is-four-fifths", incomeGroup.since.toString),
-          <.div(^.className:="column", formatting.formatCurrency(currentTotal)),
+          <.div(^.className := "column",
+            <.span(formatting.formatCurrency(currentTotal)),
+            <.br(),
+            <.small(^.className := "has-text-success", s"+${formatting.formatNumber(incomeGroup.percent(currentTotal))}%")
+          ),
         )
       ),
       <.div(^.className:="card-content",

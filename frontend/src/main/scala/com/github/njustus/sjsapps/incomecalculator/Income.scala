@@ -28,5 +28,10 @@ object Income {
 
 case class IncomeGroup(since:LocalDate,
                        incomes:List[Income]) {
-  def amount: BigDecimal = incomes.map(_.yearlyAmount).sum
+  val amount: BigDecimal = incomes.map(_.yearlyAmount).sum
+
+  def percent(currentTotal: BigDecimal): BigDecimal =
+    val previousTotal = currentTotal - this.amount
+    if (previousTotal <= BigDecimal(0.0)) BigDecimal(100)
+    else (this.amount / previousTotal) * 100
 }
