@@ -21,4 +21,12 @@ case class Income(description: String,
 
 object Income {
   def zero: Income = Income("", BigDecimal(0), Interval.Yearly, Instant.now.atOffset(ZoneOffset.UTC).toLocalDate)
+
+  implicit val incomeOrdering: Ordering[Income] = Ordering.by[Income, LocalDate](_.since)
+  implicit val incomeGroupOrdering: Ordering[IncomeGroup] = Ordering.by[IncomeGroup, LocalDate](_.since)
+}
+
+case class IncomeGroup(since:LocalDate,
+                       incomes:List[Income]) {
+  def amount: BigDecimal = incomes.map(_.yearlyAmount).sum
 }
