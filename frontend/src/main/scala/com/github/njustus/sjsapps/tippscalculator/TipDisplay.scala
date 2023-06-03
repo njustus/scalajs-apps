@@ -13,7 +13,7 @@ object TipDisplay {
                    tipAmount: BigDecimal)
 
   object Props {
-    def zero: Props = Props(0, 0)
+    def zero: Props = Props(0.0, 0.0)
   }
 
   def renderFn(props: Props): VdomNode = {

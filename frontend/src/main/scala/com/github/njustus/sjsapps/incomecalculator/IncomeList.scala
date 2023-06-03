@@ -38,8 +38,8 @@ object IncomeList {
     <.div(^.key:=s"income-$idx", ^.className:="columns",
       <.div(^.className:="column is-three-fifths", income.description),
       //<.div(^.className:="column", s"Seit: ${income.since}"),
-      <.div(^.className:="column", formatting.formatCurrency(income.monthlyAmount)),
-      <.div(^.className:="column", <.strong(formatting.formatCurrency(income.yearlyAmount))),
+      <.div(^.className:="column text-align-right", formatting.formatCurrency(income.monthlyAmount)),
+      <.div(^.className:="column text-align-right", <.strong(formatting.formatCurrency(income.yearlyAmount))),
     )
 
   private def renderIncomeGroup(incomeGroup: IncomeGroup, currentTotal:BigDecimal, idx:Int) =
@@ -49,7 +49,7 @@ object IncomeList {
       <.div(^.className:="card-header",
         <.div(^.className:="card-header-title",
           <.div(^.className:="column is-four-fifths", incomeGroup.since.toString),
-          <.div(^.className := "column",
+          <.div(^.className := "column text-align-right",
             <.span(formatting.formatCurrency(currentTotal)),
             <.br(),
             <.small(^.className := "has-text-success", s"+${formatting.formatNumber(incomeGroup.percent(currentTotal))}%")
@@ -60,8 +60,8 @@ object IncomeList {
         (incomeList :+
           <.div(^.className:="columns",
             <.div(^.className:="column is-three-fifths"),
-            <.div(^.className:="column", <.small("monthly")),
-            <.div(^.className:="column", <.small("yearly")),
+            <.div(^.className:="column text-align-right", <.small("monthly")),
+            <.div(^.className:="column text-align-right", <.small("yearly")),
           )
           ).toVdomArray
       )
