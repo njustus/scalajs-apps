@@ -24,6 +24,10 @@ object IncomeForm {
       val value = ev.target.value
       state.modState(_.copy(amount = BigDecimal(value)))
 
+    def updateDescription(ev:ReactEventFromInput) =
+      val value = ev.target.value
+      state.modState(_.copy(description = value))
+
     def updateInterval(ev:ReactEventFromInput) =
       val value = ev.target.value
       state.modState(_.copy(paymentInterval = Interval.valueOf(value)))
@@ -33,14 +37,15 @@ object IncomeForm {
       state.modState(_.copy(since = LocalDate.parse(value)))
 
     <.div(^.className:="columns",
-      <.input(^.className:="column is-one-quarter input", ^.placeholder:="Amount", ^.onChange ==> updateAmount),
+      <.input(^.className:="column input", ^.placeholder:="Description", ^.onChange ==> updateDescription),
+      <.input(^.className:="column input", ^.placeholder:="Amount", ^.onChange ==> updateAmount),
       <.div(^.className:="select",
         <.select(
           intervalOptions,
           ^.onChange ==> updateInterval
         )
       ),
-      <.input(^.className:="column is-one-quarter input",
+      <.input(^.className:="column input",
         ^.`type`:="date",
         ^.onChange ==> updateSinceDate),
       <.button(^.className:="button is-primary",
