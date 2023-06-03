@@ -37,7 +37,6 @@ object IncomeList {
   private def renderIncome(income:Income, idx:Int) =
     <.div(^.key:=s"income-$idx", ^.className:="columns",
       <.div(^.className:="column is-three-fifths", income.description),
-      //<.div(^.className:="column", s"Seit: ${income.since}"),
       <.div(^.className:="column text-align-right", formatting.formatCurrency(income.monthlyAmount)),
       <.div(^.className:="column text-align-right", <.strong(formatting.formatCurrency(income.yearlyAmount))),
     )
@@ -56,14 +55,13 @@ object IncomeList {
           ),
         )
       ),
-      <.div(^.className:="card-content",
-        (incomeList :+
-          <.div(^.className:="columns",
-            <.div(^.className:="column is-three-fifths"),
-            <.div(^.className:="column text-align-right", <.small("monthly")),
-            <.div(^.className:="column text-align-right", <.small("yearly")),
-          )
-          ).toVdomArray
+      <.div(^.className := "card-content",
+        incomeList.toVdomArray,
+        <.div(^.className := "columns",
+          <.div(^.className := "column is-three-fifths"),
+          <.div(^.className := "column text-align-right", <.small("monthly")),
+          <.div(^.className := "column text-align-right", <.small("yearly"))
+        )
       )
     )
 

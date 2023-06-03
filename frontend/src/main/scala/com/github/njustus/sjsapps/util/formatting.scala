@@ -16,13 +16,11 @@ object formatting {
   })
 
   def formatNumber(x: BigDecimal): String =
-    println(numberFormat)
     if(x == null) numberFormat.format(0.0)
     else numberFormat.format(x.doubleValue)
 
 
   def formatCurrency(x: BigDecimal): String =
-    println(currencyFormat)
     if(x == null) currencyFormat.format(0.0)
     else currencyFormat.format(x.doubleValue)
 }
