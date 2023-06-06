@@ -24,6 +24,8 @@ object Income {
 
   implicit val incomeOrdering: Ordering[Income] = Ordering.by[Income, LocalDate](_.since)
   implicit val incomeGroupOrdering: Ordering[IncomeGroup] = Ordering.by[IncomeGroup, LocalDate](_.since)
+
+  def group(since:LocalDate, income:Income*): IncomeGroup = IncomeGroup(since, income.toList)
 }
 
 case class IncomeGroup(since:LocalDate,

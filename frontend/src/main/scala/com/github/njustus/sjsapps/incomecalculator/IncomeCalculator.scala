@@ -21,13 +21,14 @@ object IncomeCalculator {
 
   private def renderFn(state: Hooks.UseState[State]): VdomNode = {
     val addIncomeState = (x:Income) => state.modState(addIncome(x))
+    val incomeListProps = IncomeList.Props(state.value.incomes)
 
     <.div(^.className:="mt-4 columns is-multiline",
       <.div(^.className:="column is-full",
-        IncomeForm.component(IncomeForm.Props(addIncomeState))
+        IncomeForm.component(IncomeForm.Props(incomeListProps.currentTotalIncome, addIncomeState))
       ),
       <.div(^.className:="mt-2 column is-full",
-        IncomeList.component(IncomeList.Props(state.value.incomes))
+        IncomeList.component(incomeListProps)
       )
     )
   }

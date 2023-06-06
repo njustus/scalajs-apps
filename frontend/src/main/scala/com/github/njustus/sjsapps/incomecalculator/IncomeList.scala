@@ -8,9 +8,7 @@ import java.time.LocalDate
 
 object IncomeList {
   //TODO collapse everything besides yearly amount
-  //TOOD display increase in % against previous increase
   //TODO enable testing increases 'what is 3000€ in % - what are 3%?)
-  //TODO display . betweeen thousand
   case class Props(xs:List[Income]) {
     val incomeGroups: List[IncomeGroup] = xs.groupBy(i => i.since)
       .map(IncomeGroup.apply)
@@ -30,6 +28,8 @@ object IncomeList {
         val xs = incomeGroups.zip(sums).reverse
         println(xs)
         xs
+
+    val currentTotalIncome: BigDecimal = incomeGroupsWithSum.head._2
   }
 
   case class State()
