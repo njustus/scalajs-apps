@@ -1,0 +1,12 @@
+.memory {
+  .memory-grid {
+    display: grid;
+    grid-template-columns: repeat(8, 1fr);
+    grid-gap: 10px;
+
+    .memory-card {
+      border: 5px red solid;
+    }
+  }
+
+}

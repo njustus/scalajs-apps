@@ -2,6 +2,7 @@ package com.github.njustus.sjsapps
 
 import com.github.njustus.sjsapps.incomecalculator.IncomeCalculator
 import com.github.njustus.sjsapps.tippscalculator.TippsCalculator
+import com.github.njustus.sjsapps.memory.Memory
 import japgolly.scalajs.react.*
 import japgolly.scalajs.react.vdom.*
 import japgolly.scalajs.react.vdom.html_<^.*
@@ -48,7 +49,8 @@ object PageWrapper {
   def build() = {
     val p = Props(Map(
       "Tips Calculator" -> TippsCalculator.component,
-      "Income Calculator" -> IncomeCalculator.component
+      "Income Calculator" -> IncomeCalculator.component,
+      "Memory" -> Memory.component
     ))
 
     component(p)
