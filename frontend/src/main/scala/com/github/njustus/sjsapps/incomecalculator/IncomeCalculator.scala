@@ -23,7 +23,7 @@ object IncomeCalculator {
     val addIncomeState = (x:Income) => state.modState(addIncome(x))
     val incomeListProps = IncomeList.Props(state.value.incomes)
 
-    <.div(^.className:="mt-4 columns is-multiline",
+    <.div(^.className:="m-4 columns is-multiline",
       <.div(^.className:="column is-full",
         IncomeForm.component(IncomeForm.Props(incomeListProps.currentTotalIncome, addIncomeState))
       ),
