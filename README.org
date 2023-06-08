@@ -1,0 +1,9 @@
+* scalajs-apps
+
+Multiple sample apps written using ScalaJS and React 17.
+
+** setup
+
+- install the dependencies in =frontend=: =cd frontend && npm install=
+- start the dev server: =cd frontend && npm start=
+- build ScalaJS: =sbt ~frontend/fastLinkJS=
