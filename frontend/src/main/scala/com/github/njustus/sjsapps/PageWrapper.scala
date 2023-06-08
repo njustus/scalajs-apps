@@ -34,7 +34,7 @@ object PageWrapper {
           menuItems.toVdomArray
         )
       ),
-      <.div(^.className := "column  is-three-quarters",
+      <.div(^.className := "column is-four-fifths",
         props.pages(state.value.selectedKey)()
       )
     )
