@@ -4,21 +4,13 @@
   <meta charset="UTF-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link rel="stylesheet" href="./node_modules/bulma/css/bulma.min.css" />
-  <style>
-    small {
-      font-size: .675em;
-    }
-    .text-align-right {
-      text-align: right;
-    }
-  </style>
   <title>SJS Apps</title>
 </head>
 <body>
   <div id="parent-root"></div>
-  <script crossorigin src="./project/react.development.js"></script>
-  <script crossorigin src="./project/react-dom.development.js"></script>
-  <script type="text/javascript" src="./target/scala-3.3.0/frontend-fastopt/main.js"></script>
+  <script type="module" src="./node_modules/react/umd/react.development.js"></script>
+  <script type="module" src="./node_modules/react-dom/umd/react-dom.development.min.js"></script>
+
+  <script type="module" src="./bootstrap.js"></script>
 </body>
 </html>

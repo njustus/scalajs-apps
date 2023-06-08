@@ -3,13 +3,17 @@
   "version": "1.0.0",
   "description": "",
   "scripts": {
-    "build-sass": "sass src/main/assets/scss/style.scss target/scala-2.13/classes/style.css",
-    "watch-sass": "sass -w src/main/assets/scss/style.scss target/scala-2.13/classes/style.css",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "npm run dev",
+    "dev": "vite --host",
+    "build": "vite build",
+    "preview": "vite preview"
   },
   "author": "",
   "dependencies": {
-    "bulma": "^0.9.4"
+    "bulma": "^0.9.4",
+    "react": "^17.0.2",
+    "react-dom": "^17.0.2",
+    "vite": "^4.3.9"
   },
   "devDependencies": {
     "sass": "^1.62.0"
