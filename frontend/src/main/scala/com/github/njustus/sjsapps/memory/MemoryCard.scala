@@ -10,11 +10,11 @@ import japgolly.scalajs.react.hooks.Hooks.UseState
 import org.scalajs.dom.intl.NumberFormatOptions
 
 object MemoryCard {
-  case class Props(symbol:String, isHidden:Boolean)
+  case class Props(iconProps:Icon.Props, isHidden:Boolean)
 
   def renderFn(props: Props): VdomNode = {
     <.div(^.className:="memory-card",
-      Icon.component(Icon.Props("snowflake"))
+      Icon.component(props.iconProps)
     )
   }
 
