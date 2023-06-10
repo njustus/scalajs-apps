@@ -43,7 +43,7 @@ object PageWrapper {
   }
 
   private val component = ScalaFnComponent.withHooks[Props]
-    .useStateBy(props => State(props.pages.keys.head))
+    .useStateBy(props => State("Memory"))
     .render(renderFn)
 
   def build() = {

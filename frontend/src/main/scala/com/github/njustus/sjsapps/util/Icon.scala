@@ -1,6 +1,5 @@
-package com.github.njustus.sjsapps.memory
+package com.github.njustus.sjsapps.util
 
-import com.github.njustus.sjsapps.util._
 import japgolly.scalajs.react._
 import japgolly.scalajs.react.vdom.html_<^._
 import org.scalajs.dom.window
@@ -9,13 +8,11 @@ import com.github.njustus.sjsapps.util.formatting
 import japgolly.scalajs.react.hooks.Hooks.UseState
 import org.scalajs.dom.intl.NumberFormatOptions
 
-object MemoryCard {
-  case class Props(symbol:String, isHidden:Boolean)
+object Icon {
+  case class Props(icon:String, pack:String="solid")
 
   def renderFn(props: Props): VdomNode = {
-    <.div(^.className:="memory-card",
-      Icon.component(Icon.Props("snowflake"))
-    )
+    <.i(^.className:=s"fa fa-${props.pack} fa-${props.icon}")
   }
 
   val component = ScalaFnComponent.withHooks[Props]
