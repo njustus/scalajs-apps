@@ -13,7 +13,7 @@ object MemoryCard {
   case class Props(iconProps:Icon.Props, isHidden:Boolean)
 
   def renderFn(props: Props): VdomNode = {
-    <.div(^.className:="memory-card",
+    <.div(^.className:="box memory-card",
       Icon.component(props.iconProps)
     )
   }
