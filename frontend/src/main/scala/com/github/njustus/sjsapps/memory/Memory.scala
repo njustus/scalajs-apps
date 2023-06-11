@@ -12,7 +12,7 @@ import scala.util.Random
 
 object Memory {
 
-  val symbols = Seq(
+  val symbols = List(
     Icon.Props("snowflake"),
     Icon.Props("snowman"),
     Icon.Props("skiing"),
@@ -34,14 +34,24 @@ object Memory {
 
   def zero: Memory.State = {
     val cards = Memory.symbols
-      .flatMap(p => List(p, p))
-      .map(p => MemoryCard.Props(p, false))
-      .toList
+      .flatMap { icon =>
+        val id = icon.icon
+        List(
+          MemoryCard.Props(id+"-1", icon, false),
+          MemoryCard.Props(id+"-2", icon, false)
+        )
+      }
+
+    require(cards.distinctBy(_.id).size == cards.size, "Expected unique IDS per card")
+
     State(Random.shuffle(Random.shuffle(cards)))
   }
 
   def renderFn(state: Hooks.UseState[State]): VdomNode = {
-    val cardComponents = state.value.board.map { props => MemoryCard.component(props) }
+    val cardComponents = state.value.board.map { props =>
+      <.div(^.key:=props.id,MemoryCard.component(props))
+    }
+
     <.div(^.className:="memory",
       <.div(^.className:="memory-grid",
         cardComponents.toVdomArray

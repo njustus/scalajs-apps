@@ -10,7 +10,7 @@ import japgolly.scalajs.react.hooks.Hooks.UseState
 import org.scalajs.dom.intl.NumberFormatOptions
 
 object MemoryCard {
-  case class Props(iconProps:Icon.Props, isHidden:Boolean)
+  case class Props(id:String, iconProps:Icon.Props, isHidden:Boolean)
 
   def renderFn(props: Props): VdomNode = {
     <.div(^.className:="box memory-card",
