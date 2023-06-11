@@ -37,8 +37,8 @@ object Memory {
       .flatMap { icon =>
         val id = icon.icon
         List(
-          MemoryCard.Props(id+"-1", icon, false),
-          MemoryCard.Props(id+"-2", icon, false)
+          MemoryCard.Props(id+"-1", icon, MemoryCard.CardState.Closed),
+          MemoryCard.Props(id+"-2", icon, MemoryCard.CardState.Closed)
         )
       }
 

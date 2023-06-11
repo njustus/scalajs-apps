@@ -18,6 +18,15 @@
       display: flex;
       justify-content: center;
       align-items: center;
+
+      &--closed {
+        background-color: lightgreen;
+        content: "";
+      }
+
+      &--removed {
+        border: 2px lightgray solid;
+      }
     }
   }
 
