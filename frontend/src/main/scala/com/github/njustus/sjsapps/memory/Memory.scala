@@ -8,6 +8,7 @@ import com.github.njustus.sjsapps.util.formatting
 import japgolly.scalajs.react.hooks.Hooks.UseState
 import org.scalajs.dom.intl.NumberFormatOptions
 import com.github.njustus.sjsapps.util._
+import scala.util.Random
 
 object Memory {
 
@@ -29,22 +30,28 @@ object Memory {
     Icon.Props("crow"),
   )
 
-  case class Props(size:Int)
+  case class State(board: List[MemoryCard.Props])
 
-  def renderFn(): VdomNode = {
+  def zero: Memory.State = {
     val cards = Memory.symbols
       .flatMap(p => List(p, p))
-      .map(p => MemoryCard.component(MemoryCard.Props(p, false)))
+      .map(p => MemoryCard.Props(p, false))
+      .toList
+    State(Random.shuffle(Random.shuffle(cards)))
+  }
 
+  def renderFn(state: Hooks.UseState[State]): VdomNode = {
+    val cardComponents = state.value.board.map { props => MemoryCard.component(props) }
     <.div(^.className:="memory",
       <.div(^.className:="memory-grid",
-        cards.toVdomArray
+        cardComponents.toVdomArray
       )
     )
   }
 
   val component = ScalaFnComponent.withHooks[Unit]
-    .render { (_) =>
-      renderFn()
+  .useState(zero)
+    .render { (_, state) =>
+      renderFn(state)
     }
 }
