@@ -10,28 +10,30 @@ import japgolly.scalajs.react.hooks.Hooks.UseState
 import org.scalajs.dom.intl.NumberFormatOptions
 
 object MemoryCard {
-  enum CardState:
-    case Open, Closed, Removed
 
-  case class Props(id:String, iconProps: Icon.Props, cardState: CardState)
+  case class Props(cardDto:CardDto,
+    onClick: String => SyncIO[Unit])
 
-  private def openCard(iconProps:Icon.Props) =
-    <.div(^.className:="box memory-card",
-      Icon.component(iconProps)
+  private def openCard(props:Props) =
+    <.div(^.className:="box memory-card memory-card--open",
+      Icon.component(props.cardDto.iconProps),
+      ^.onClick --> props.onClick(props.cardDto.id)
     )
 
-  private def closedCard(iconProps:Icon.Props) =
+  private def closedCard(props:Props) =
     <.div(^.className:="box memory-card memory-card--closed",
+      ^.onClick --> props.onClick(props.cardDto.id)
     )
 
-  private def removedCard(iconProps:Icon.Props) =
+  private def removedCard(props:Props) =
     <.div(^.className:="memory-card memory-card--removed",
+      ^.onClick --> props.onClick(props.cardDto.id)
     )
 
-  def renderFn(props: Props): VdomNode = props.cardState match {
-    case CardState.Open => openCard(props.iconProps)
-    case CardState.Closed => closedCard(props.iconProps)
-    case CardState.Removed => removedCard(props.iconProps)
+  def renderFn(props: Props): VdomNode = props.cardDto.cardState match {
+    case CardState.Open => openCard(props)
+    case CardState.Closed => closedCard(props)
+    case CardState.Removed => removedCard(props)
   }
 
   val component = ScalaFnComponent.withHooks[Props]

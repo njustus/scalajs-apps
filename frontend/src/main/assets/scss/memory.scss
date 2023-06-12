@@ -18,6 +18,16 @@
       display: flex;
       justify-content: center;
       align-items: center;
+      border: 2px lightslategray solid;
+
+      /* transform: rotateY(-180deg); */
+
+      &--open {
+        transition: transform 2s;
+        transform-style: preserve-3d;
+
+        transform: rotateY(180deg);
+      }
 
       &--closed {
         background-color: lightgreen;

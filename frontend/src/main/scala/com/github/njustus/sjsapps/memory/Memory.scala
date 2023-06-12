@@ -30,15 +30,15 @@ object Memory {
     Icon.Props("crow"),
   )
 
-  case class State(board: List[MemoryCard.Props])
+  case class State(board: List[CardDto])
 
   def zero: Memory.State = {
     val cards = Memory.symbols
       .flatMap { icon =>
         val id = icon.icon
         List(
-          MemoryCard.Props(id+"-1", icon, MemoryCard.CardState.Closed),
-          MemoryCard.Props(id+"-2", icon, MemoryCard.CardState.Closed)
+          CardDto(id+"-1", icon, CardState.Closed),
+          CardDto(id+"-2", icon, CardState.Closed)
         )
       }
 
@@ -48,8 +48,21 @@ object Memory {
   }
 
   def renderFn(state: Hooks.UseState[State]): VdomNode = {
-    val cardComponents = state.value.board.map { props =>
-      <.div(^.key:=props.id,MemoryCard.component(props))
+    def onCardClicked(key:String):SyncIO[Unit] = {
+      println(s"clicked key: $key")
+      state.modState(st =>
+        st.copy(board = st.board.map {
+        case card if card.id == key => card.flip
+        case card => card
+      })
+      )
+    }
+
+
+    val cardComponents = state.value.board.map { cardDto =>
+      <.div(^.key:=cardDto.id,
+        MemoryCard.component(MemoryCard.Props(cardDto, onCardClicked))
+      )
     }
 
     <.div(^.className:="memory",
