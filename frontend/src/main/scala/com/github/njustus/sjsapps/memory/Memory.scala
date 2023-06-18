@@ -30,7 +30,17 @@ object Memory {
     Icon.Props("crow"),
   )
 
-  case class State(board: List[CardDto])
+  case class State(board: List[CardDto]) {
+
+    def updateCard(key:String)(fn: CardDto => CardDto):State = {
+      val newBoard = board.map {
+        case card if card.id == key => fn(card)
+        case card => card
+      }
+
+      this.copy(board = newBoard)
+    }
+
 
   def zero: Memory.State = {
     val cards = Memory.symbols
@@ -48,16 +58,9 @@ object Memory {
   }
 
   def renderFn(state: Hooks.UseState[State]): VdomNode = {
-    def onCardClicked(key:String):SyncIO[Unit] = {
+    def onCardClicked(key:String):SyncIO[Unit] =
       println(s"clicked key: $key")
-      state.modState(st =>
-        st.copy(board = st.board.map {
-        case card if card.id == key => card.flip
-        case card => card
-      })
-      )
-    }
-
+      state.modState(_.updateCard(key) { card => card.flip })
 
     val cardComponents = state.value.board.map { cardDto =>
       <.div(^.key:=cardDto.id,
@@ -73,7 +76,7 @@ object Memory {
   }
 
   val component = ScalaFnComponent.withHooks[Unit]
-  .useState(zero)
+    .useState(zero)
     .render { (_, state) =>
       renderFn(state)
     }
