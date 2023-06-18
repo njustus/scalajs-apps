@@ -12,6 +12,11 @@ case class CardDto(
       case CardState.Closed => this.copy(cardState= CardState.Open)
       case _ => this
   }
+
+  def remove:CardDto = this.copy(cardState=CardState.Removed)
+
+  def isOpen: Boolean = cardState == CardState.Open
+  def isClosed: Boolean = cardState == CardState.Closed
 }
 
 enum CardState:
