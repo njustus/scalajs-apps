@@ -10,7 +10,6 @@
 .bloop
 .vscode
 
-*.js
 *.log
 *.class
 *.*~
