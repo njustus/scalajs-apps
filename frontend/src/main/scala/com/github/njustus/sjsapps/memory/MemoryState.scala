@@ -13,6 +13,27 @@ case class MemoryState(board: List[CardDto]) {
 
     this.copy(board = newBoard)
   }
+
+  def checkOpenCards(): MemoryState = {
+    val openCards = board.filter(_.isOpen)
+    if (openCards.size < 2 || openCards.size % 2 != 0) {
+      this
+    } else {
+      val bothCards = openCards.flatMap { card =>
+        openCards.find(card2 => card2.id != card.id && card2.isSameIcon(card))
+          .map(card2 => List(card, card2))
+          .getOrElse(Nil)
+      }.toSet
+
+      println(s"bothCards: $bothCards")
+
+      this.copy(board = board.map {
+        case card if bothCards.contains(card) => card.remove
+        case card if card.isOpen => card.flip
+        case card => card
+      })
+    }
+  }
 }
 
 object MemoryState {

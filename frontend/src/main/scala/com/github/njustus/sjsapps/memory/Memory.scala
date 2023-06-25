@@ -16,6 +16,8 @@ object Memory {
     def onCardClicked(key:String):IO[Unit] =
       println(s"clicked key: $key")
       state.modState { _.updateCard(key) { card => card.flip } }.to[IO]
+        >> IO.sleep(2.seconds)
+        >> state.modState { _.checkOpenCards() }.to[IO]
 
     val cardComponents = state.value.board.map { cardDto =>
       <.div(^.key:=cardDto.id,
