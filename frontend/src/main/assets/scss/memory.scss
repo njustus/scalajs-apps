@@ -39,6 +39,17 @@ $front-color: white;
     }
   }
 
+  .player-a {
+    color: deepskyblue;
+  }
+  .player-b {
+    color: mediumvioletred;
+  }
+
+  .player-active {
+    font-weight: bold;
+    font-size: x-large;
+  }
 }
 
 @keyframes openCard {

@@ -25,9 +25,14 @@ object Memory {
       )
     }
 
-    <.div(^.className:="memory",
+    <.div(^.className:="columns memory",
+    <.div(^.className:="column is-two-thirds",
       <.div(^.className:="memory-grid",
         cardComponents.toVdomArray
+      )
+    ),
+      <.div(^.className:="column",
+      ScoreDisplay.component(ScoreDisplay.Props(state.value))
       )
     )
   }
