@@ -17,6 +17,17 @@ case class CardDto(
 
   def isOpen: Boolean = cardState == CardState.Open
   def isClosed: Boolean = cardState == CardState.Closed
+
+  def icon: String = iconProps.icon
+
+  def isSameIcon(other:CardDto): Boolean = this.icon == other.icon
+
+  override def equals(obj: Any): Boolean = obj match {
+    case card:CardDto => this.id == card.id
+    case _ => false
+  }
+
+  override def hashCode(): Int = this.id.hashCode
 }
 
 enum CardState:
