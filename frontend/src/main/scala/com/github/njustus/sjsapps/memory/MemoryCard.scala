@@ -12,7 +12,7 @@ import org.scalajs.dom.intl.NumberFormatOptions
 object MemoryCard {
 
   case class Props(cardDto:CardDto,
-    onClick: String => SyncIO[Unit])
+    onClick: String => IO[Unit])
 
   private def openCard(props:Props) =
     <.div(^.className:="box memory-card memory-card--open",

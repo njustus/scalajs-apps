@@ -8,13 +8,14 @@ import japgolly.scalajs.react.hooks.Hooks.UseState
 import org.scalajs.dom.intl.NumberFormatOptions
 import com.github.njustus.sjsapps.util._
 import scala.util.Random
+import scala.concurrent.duration.*
 
 object Memory {
 
   def renderFn(state: Hooks.UseState[MemoryState]): VdomNode = {
-    def onCardClicked(key:String):SyncIO[Unit] =
+    def onCardClicked(key:String):IO[Unit] =
       println(s"clicked key: $key")
-      state.modState(_.updateCard(key) { card => card.flip })
+      state.modState { _.updateCard(key) { card => card.flip } }.to[IO]
 
     val cardComponents = state.value.board.map { cardDto =>
       <.div(^.key:=cardDto.id,
