@@ -4,11 +4,20 @@ import com.github.njustus.sjsapps.memory.MemoryState.Player
 import com.github.njustus.sjsapps.util.*
 
 import scala.util.Random
+import cats.data.OptionT
+import cats.effect.kernel.Resource.Pure
+import cats.Id
 
 case class MemoryState(board: List[CardDto],
                        players: List[Player],
                        currentPlayersId: String) {
   require(players.size == 2, "expected exactly 2 players")
+
+  def isGameOver: Boolean = board.forall(_.isRemoved)
+
+  def winner: Option[Player] = OptionT.when[Id, Player](isGameOver) {
+    players.maxBy(_.points)
+  }.value
 
   def updateCard(key: String)(fn: CardDto => CardDto): MemoryState = {
     val newBoard = board.map {

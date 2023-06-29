@@ -9,8 +9,17 @@ import org.scalajs.dom.intl.NumberFormatOptions
 import com.github.njustus.sjsapps.util._
 import scala.util.Random
 import scala.concurrent.duration.*
+import com.github.njustus.sjsapps.memory.MemoryState.Player
 
 object Memory {
+
+
+  private def displayWinner(winner: Player): VdomNode =
+    <.div(^.className:="",
+      <.h2(^.className:="has-text-primary is-size-1 strong",
+        s"${winner.name} won with ${winner.points} Points!"
+      )
+    )
 
   def renderFn(state: Hooks.UseState[MemoryState]): VdomNode = {
     def onCardClicked(key:String):IO[Unit] =
@@ -25,16 +34,18 @@ object Memory {
       )
     }
 
-    <.div(^.className:="columns memory",
-    <.div(^.className:="column is-two-thirds",
-      <.div(^.className:="memory-grid",
-        cardComponents.toVdomArray
+    state.value.winner.map(displayWinner).getOrElse {
+      <.div(^.className:="columns memory",
+        <.div(^.className:="column is-two-thirds",
+          <.div(^.className:="memory-grid",
+            cardComponents.toVdomArray
+          )
+        ),
+        <.div(^.className:="column",
+          ScoreDisplay.component(ScoreDisplay.Props(state.value))
+        )
       )
-    ),
-      <.div(^.className:="column",
-      ScoreDisplay.component(ScoreDisplay.Props(state.value))
-      )
-    )
+    }
   }
 
   val component = ScalaFnComponent.withHooks[Unit]

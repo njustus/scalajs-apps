@@ -17,6 +17,7 @@ case class CardDto(
 
   def isOpen: Boolean = cardState == CardState.Open
   def isClosed: Boolean = cardState == CardState.Closed
+  def isRemoved: Boolean = cardState == CardState.Removed
 
   def icon: String = iconProps.icon
 
