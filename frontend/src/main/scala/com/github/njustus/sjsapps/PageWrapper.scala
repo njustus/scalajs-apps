@@ -50,7 +50,8 @@ object PageWrapper {
     val p = Props(Map(
       "Tips Calculator" -> TippsCalculator.component,
       "Income Calculator" -> IncomeCalculator.component,
-      "Memory" -> Memory.component
+      "Memory" -> Memory.component,
+      "Form" -> FormExample.component
     ))
 
     component(p)
