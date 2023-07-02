@@ -1,6 +1,7 @@
 package com.github.njustus.sjsapps
 
 import com.github.njustus.sjsapps.incomecalculator.IncomeCalculator
+import com.github.njustus.sjsapps.kanbanboard.BoardComponent
 import com.github.njustus.sjsapps.tippscalculator.TippsCalculator
 import com.github.njustus.sjsapps.memory.Memory
 import japgolly.scalajs.react.*
@@ -51,7 +52,8 @@ object PageWrapper {
       "Tips Calculator" -> TippsCalculator.component,
       "Income Calculator" -> IncomeCalculator.component,
       "Memory" -> Memory.component,
-      "Form" -> FormExample.component
+      "Form" -> FormExample.component,
+      "Kanban" -> BoardComponent.component
     ))
 
     component(p)
