@@ -16,7 +16,7 @@ object BoardComponent {
 
   private def renderFn(state: Hooks.UseState[State]): VdomNode = {
     <.div(^.className:="m-4 columns",
-      state.value.columns
+      state.value.sortedColumns
         .map((state, tickets) => ColumnComponent.component(ColumnComponent.Props(state,tickets)))
         .toVdomArray
     )

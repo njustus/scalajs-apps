@@ -1,15 +1,18 @@
 package com.github.njustus.sjsapps.kanbanboard
 
 object dtos {
-  enum TicketState {
-    case Todo extends TicketState
-    case Wip extends TicketState
-    case Test extends TicketState
-    case Done extends TicketState
+  enum TicketState(val orderId: Int) extends Ordered[TicketState] {
+    case Todo extends TicketState(0)
+    case Wip extends TicketState(1)
+    case Test extends TicketState(2)
+    case Done extends TicketState(3)
+
+    override def compare(that: TicketState): Int = this.orderId - that.orderId
   }
 
   case class Board(tickets: Seq[Ticket]) {
-    val columns: Map[TicketState, Seq[Ticket]] = tickets.groupBy(_.state)
+    private val columns: Map[TicketState, Seq[Ticket]] = tickets.groupBy(_.state)
+    val sortedColumns: Seq[(TicketState, Seq[Ticket])] = columns.toList.sortBy((state, _) => state)
 
     def moveState(ticketIdx: Int)(state: TicketState): Board = this.copy(tickets = tickets.zipWithIndex.map {
       case (ticket, idx) if idx == ticketIdx => ticket.copy(state = state)
