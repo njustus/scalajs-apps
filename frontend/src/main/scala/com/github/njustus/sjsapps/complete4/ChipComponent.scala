@@ -16,8 +16,7 @@ object ChipComponent {
   private def renderFn(props: Props): VdomNode =
     <.div(
       ^.className:=s"complete-4-chip ${props.chip.cssClass}",
-      ^.onClick --> props.onClick(props.columnIdx),
-      props.chip.color.toString
+      ^.onClick --> props.onClick(props.columnIdx)
     )
 
   val component = ScalaFnComponent.withHooks[Props]

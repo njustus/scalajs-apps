@@ -36,6 +36,7 @@ object Complete4Board {
           row.map { chip =>
             <.div(
               ^.key:=chip.id,
+              ^.id:=s"chip-${chip.id}",
               ChipComponent.component(ChipComponent.Props(chip, rowIdx, onClick))
             )
           }
