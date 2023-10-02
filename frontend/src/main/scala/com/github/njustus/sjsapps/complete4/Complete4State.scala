@@ -41,9 +41,9 @@ case class Complete4State(chipColumns: List[List[Chip]],
     val updatedColumns = chipColumns.zipWithIndex.map {
       case (column, idx) if idx == columnIdx =>
         val firstEmptyChipIndex = column.indexWhere(chip => chip.isEmpty)
-        println(s"updating row: $idx and chipIdx $firstEmptyChipIndex")
+        println(s"updating row: $idx and chipIdx $firstEmptyChipIndex to $color")
 
-        if (firstEmptyChipIndex <= 0) column
+        if (firstEmptyChipIndex < 0) column
         else {
           val flippedChip = column(firstEmptyChipIndex).updateColor(color)
           column.updated(firstEmptyChipIndex, flippedChip)
