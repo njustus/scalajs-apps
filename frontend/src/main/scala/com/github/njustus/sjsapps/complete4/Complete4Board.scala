@@ -19,7 +19,7 @@ object Complete4Board {
       state.players.map { player =>
         val currentPlayerClass = if (state.isCurrentPlayer(player)) "has-text-weight-bold" else ""
         <.div(
-          ^.key:=player.name,
+          ^.key := player.name,
           ^.className := s"column is-full ${player.descriptionCssClass} ${currentPlayerClass}",
           (if (state.isCurrentPlayer(player)) "* " else "") + player.name)
       }.toVdomArray
@@ -32,14 +32,16 @@ object Complete4Board {
 
     <.div(^.className := "complete-4",
       <.div(^.className := "complete-4-grid",
-        state.value.chipColumns.zipWithIndex.flatMap { (row, rowIdx) =>
-          row.map { chip =>
-            <.div(
-              ^.key:=chip.id,
-              ^.id:=s"chip-${chip.id}",
-              ChipComponent.component(ChipComponent.Props(chip, rowIdx, onClick))
-            )
-          }
+        state.value.chipColumns.zipWithIndex.map { (col, colIdx) =>
+          <.div(^.key := s"column-$colIdx",
+            col.map { chip =>
+              <.div(
+                ^.key := chip.id,
+                ^.id := s"chip-${chip.id}",
+                ChipComponent.component(ChipComponent.Props(chip, colIdx, onClick))
+              )
+            }.reverse.toVdomArray
+          )
         }.toVdomArray
       ),
       <.div(playerState(state.value))
