@@ -14,15 +14,27 @@ import com.github.njustus.sjsapps.memory.MemoryState.Player
 
 object Complete4Board {
 
- private def renderFn(state: Hooks.UseState[Complete4State]): VdomNode = {
-    <.div(^.className:="complete-4",
-      <.div(^.className:="complete-4-grid",
-      state.value.chipColumns.flatMap { row =>
-        row.map { chip =>
-          ChipComponent.component(ChipComponent.Props(chip))
-        }
+  private def playerState(state: Complete4State): VdomNode = {
+    <.div(^.className := "columns",
+      state.players.map { player =>
+        val currentPlayerClass = if (state.isCurrentPlayer(player)) "has-text-weight-bold" else ""
+        <.div(
+          ^.className := s"column is-full ${player.descriptionCssClass} ${currentPlayerClass}",
+          (if (state.isCurrentPlayer(player)) "* " else "") + player.name)
       }.toVdomArray
-      )
+    )
+  }
+
+  private def renderFn(state: Hooks.UseState[Complete4State]): VdomNode = {
+    <.div(^.className := "complete-4",
+      <.div(^.className := "complete-4-grid",
+        state.value.chipColumns.flatMap { row =>
+          row.map { chip =>
+            ChipComponent.component(ChipComponent.Props(chip))
+          }
+        }.toVdomArray
+      ),
+      <.div(playerState(state.value))
     )
   }
 

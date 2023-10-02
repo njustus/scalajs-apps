@@ -1,7 +1,11 @@
+$player-a-color: deepskyblue;
+$player-b-color: mediumvioletred;
+
 .complete-4 {
   display: flex;
   justify-content: center;
   margin: 1rem;
+  column-gap: 20px;
 
   &-grid {
     display: grid;
@@ -21,15 +25,23 @@
     border-radius: 40px;
 
     &-a {
-      background-color: deepskyblue;
+      background-color: $player-a-color;
     }
 
     &-b {
-      background-color: mediumvioletred;
+      background-color: $player-b-color;
     }
 
     &-empty {
       background-color: ghostwhite;
     }
+  }
+
+  .player-a-color {
+    color: $player-a-color;
+  }
+
+  .player-b-color {
+    color: $player-b-color;
   }
 }
