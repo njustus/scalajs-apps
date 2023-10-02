@@ -19,6 +19,7 @@ object Complete4Board {
       state.players.map { player =>
         val currentPlayerClass = if (state.isCurrentPlayer(player)) "has-text-weight-bold" else ""
         <.div(
+          ^.key:=player.name,
           ^.className := s"column is-full ${player.descriptionCssClass} ${currentPlayerClass}",
           (if (state.isCurrentPlayer(player)) "* " else "") + player.name)
       }.toVdomArray
@@ -26,11 +27,17 @@ object Complete4Board {
   }
 
   private def renderFn(state: Hooks.UseState[Complete4State]): VdomNode = {
+    def onClick(columnIdx: Int): IO[Unit] =
+      state.modState(_.addChip(columnIdx)).to[IO]
+
     <.div(^.className := "complete-4",
       <.div(^.className := "complete-4-grid",
-        state.value.chipColumns.flatMap { row =>
+        state.value.chipColumns.zipWithIndex.flatMap { (row, rowIdx) =>
           row.map { chip =>
-            ChipComponent.component(ChipComponent.Props(chip))
+            <.div(
+              ^.key:=chip.id,
+              ChipComponent.component(ChipComponent.Props(chip, rowIdx, onClick))
+            )
           }
         }.toVdomArray
       ),

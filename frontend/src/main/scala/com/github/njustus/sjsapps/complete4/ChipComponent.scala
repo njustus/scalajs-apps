@@ -11,10 +11,14 @@ import japgolly.scalajs.react.hooks.Hooks.UseState
 import org.scalajs.dom.intl.NumberFormatOptions
 
 object ChipComponent {
-  case class Props(chip: Chip)
+  case class Props(chip: Chip, columnIdx:Int, onClick: Int => IO[Unit])
 
   private def renderFn(props: Props): VdomNode =
-    <.div(^.className:=s"complete-4-chip ${props.chip.cssClass}")
+    <.div(
+      ^.className:=s"complete-4-chip ${props.chip.cssClass}",
+      ^.onClick --> props.onClick(props.columnIdx),
+      props.chip.color.toString
+    )
 
   val component = ScalaFnComponent.withHooks[Props]
     .render { (props) =>
