@@ -1,5 +1,6 @@
 package com.github.njustus.sjsapps
 
+import com.github.njustus.sjsapps.complete4.Complete4Board
 import com.github.njustus.sjsapps.incomecalculator.IncomeCalculator
 import com.github.njustus.sjsapps.kanbanboard.BoardComponent
 import com.github.njustus.sjsapps.tippscalculator.TippsCalculator
@@ -44,7 +45,7 @@ object PageWrapper {
   }
 
   private val component = ScalaFnComponent.withHooks[Props]
-    .useStateBy(props => State("Memory"))
+    .useStateBy(props => State("Complete 4"))
     .render(renderFn)
 
   def build() = {
@@ -53,7 +54,8 @@ object PageWrapper {
       "Income Calculator" -> IncomeCalculator.component,
       "Memory" -> Memory.component,
       "Form" -> FormExample.component,
-      "Kanban" -> BoardComponent.component
+      "Kanban" -> BoardComponent.component,
+      "Complete 4" -> Complete4Board.component
     ))
 
     component(p)
