@@ -73,8 +73,8 @@ case class Complete4State(chipColumns: List[List[Chip]],
 
 object Complete4State {
   def zero: Complete4State =
-    val columns = List.tabulate(6) { colIdx =>
-      List.tabulate(4) { rowIdx =>
+    val columns = List.tabulate(7) { colIdx =>
+      List.tabulate(6) { rowIdx =>
         Chip.none(s"$colIdx-$rowIdx")
       }
     }

@@ -1,6 +1,8 @@
 $player-a-color: deepskyblue;
 $player-b-color: mediumvioletred;
 
+$board-bg-color: #44f;
+
 .complete-4 {
   display: flex;
   justify-content: center;
@@ -9,12 +11,12 @@ $player-b-color: mediumvioletred;
 
   &-grid {
     display: grid;
-    grid-template-columns: repeat(6, 1fr);
+    grid-template-columns: repeat(7, 1fr);
     column-gap: 10px;
     row-gap: 5px;
-    background-color: aquamarine;
+    background-color: $board-bg-color;
     padding: 20px 20px 40px;
-    border: 5px aquamarine solid;
+    border: 5px $board-bg-color solid;
     border-radius: 10px;
   }
 
@@ -26,10 +28,12 @@ $player-b-color: mediumvioletred;
 
     &-a {
       background-color: $player-a-color;
+      border: 5px darken($player-a-color, 12) solid;
     }
 
     &-b {
       background-color: $player-b-color;
+      border: 5px darken($player-b-color, 12) solid;
     }
 
     &-empty {
