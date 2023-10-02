@@ -14,7 +14,7 @@ object PageWrapper {
   case class State(selectedKey:String)
 
   private def renderFn(props: Props, state: Hooks.UseState[State]): VdomNode = {
-    val menuItems = props.pages.keys.map { name =>
+    val menuItems = props.pages.keys.toList.sorted.map { name =>
       val className = if(state.value.selectedKey==name) "is-active" else ""
 
       def selectPage(name:String)(ev: ReactEvent) = {
