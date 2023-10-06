@@ -10,9 +10,14 @@ import com.github.njustus.sjsapps.util.*
 
 import scala.util.Random
 import scala.concurrent.duration.*
-import com.github.njustus.sjsapps.memory.MemoryState.Player
 
 object Complete4Board {
+  private def displayWinner(winner: Player): VdomNode =
+    <.div(^.className:="",
+      <.h2(^.className:="has-text-primary is-size-1 strong",
+        s"${winner.name} won!"
+      )
+    )
 
   private def playerState(state: Complete4State): VdomNode = {
     <.div(^.className := "columns",
@@ -28,30 +33,33 @@ object Complete4Board {
 
   private def renderFn(state: Hooks.UseState[Complete4State]): VdomNode = {
     def onClick(columnIdx: Int): IO[Unit] =
-      state.modState(_.addChip(columnIdx)).to[IO]
+      state.modState(_.addChip(columnIdx)).to[IO] >>
+        IO.sleep(2.seconds) >>
+        state.modState(_.updateWinner(columnIdx)).to[IO]
 
-    <.div(^.className := "complete-4",
-      <.div(^.className := "complete-4-grid",
-        state.value.chipColumns.zipWithIndex.map { (col, colIdx) =>
-          <.div(^.key := s"column-$colIdx",
-            col.map { chip =>
-              <.div(
-                ^.key := chip.id,
-                ^.id := s"chip-${chip.id}",
-                ChipComponent.component(ChipComponent.Props(chip, colIdx, onClick))
-              )
-            }.reverse.toVdomArray
-          )
-        }.toVdomArray
-      ),
-      <.div(playerState(state.value))
-    )
+    state.value.currentWinner.map(displayWinner).getOrElse {
+      <.div(^.className := "complete-4",
+        <.div(^.className := "complete-4-grid",
+          state.value.chipColumns.zipWithIndex.map { (col, colIdx) =>
+            <.div(^.key := s"column-$colIdx",
+              col.map { chip =>
+                <.div(
+                  ^.key := chip.id,
+                  ^.id := s"chip-${chip.id}",
+                  ChipComponent.component(ChipComponent.Props(chip, colIdx, onClick))
+                )
+              }.reverse.toVdomArray
+            )
+          }.toVdomArray
+        ),
+        <.div(playerState(state.value))
+      )
+    }
   }
 
   val component = ScalaFnComponent.withHooks[Unit]
     .useState(Complete4State.zero)
     .render { (_, state) =>
-      println(s"board: ${state.value}")
       renderFn(state)
     }
 }
