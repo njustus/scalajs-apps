@@ -46,7 +46,7 @@ object PageWrapper {
   }
 
   private val component = ScalaFnComponent.withHooks[Props]
-    .useStateBy(props => State("Complete 4"))
+    .useStateBy(props => State("Capital Game"))
     .render(renderFn)
 
   def build() = {
@@ -57,7 +57,7 @@ object PageWrapper {
       "Form" -> FormExample.component,
       "Kanban" -> BoardComponent.component,
       "Complete 4" -> Complete4Board.component,
-      "CapitalGame" -> GuessingGameWrapper.component,
+      "Capital Game" -> GuessingGameWrapper.component,
     ))
 
     component(p)
