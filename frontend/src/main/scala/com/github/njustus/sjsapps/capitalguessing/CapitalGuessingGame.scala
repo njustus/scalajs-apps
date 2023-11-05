@@ -64,16 +64,21 @@ object CapitalGuessingGame {
     val capitalClicked = state.modState compose GameState.selectCapital
 
     println(s"state: ${state.value}")
-    <.div(^.className := "capital-guessing",
-      <.div(),
-      <.div(^.className:="score", "Points: ", state.value.points),
-      <.div(
-        renderColumn(props.countries, countryClicked, state.value.getCountryModifier)
-      ),
-      <.div(
-        renderColumn(props.capitals, capitalClicked, state.value.getCapitalModifier)
+
+    if(GameState.hasWon(props)(state.value)) {
+      <.div(^.className:="cell-finished", "Congrats you won")
+    } else {
+      <.div(^.className := "capital-guessing",
+        <.div(),
+        <.div(^.className:="score", "Points: ", state.value.points),
+        <.div(
+          renderColumn(props.countries, countryClicked, state.value.getCountryModifier)
+        ),
+        <.div(
+          renderColumn(props.capitals, capitalClicked, state.value.getCapitalModifier)
+        )
       )
-    )
+    }
   }
 
   val component = ScalaFnComponent.withHooks[Props]
