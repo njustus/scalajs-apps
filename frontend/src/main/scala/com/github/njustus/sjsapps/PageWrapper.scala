@@ -1,5 +1,6 @@
 package com.github.njustus.sjsapps
 
+import com.github.njustus.sjsapps.capitalguessing.GuessingGameWrapper
 import com.github.njustus.sjsapps.complete4.Complete4Board
 import com.github.njustus.sjsapps.incomecalculator.IncomeCalculator
 import com.github.njustus.sjsapps.kanbanboard.BoardComponent
@@ -55,7 +56,8 @@ object PageWrapper {
       "Memory" -> Memory.component,
       "Form" -> FormExample.component,
       "Kanban" -> BoardComponent.component,
-      "Complete 4" -> Complete4Board.component
+      "Complete 4" -> Complete4Board.component,
+      "CapitalGame" -> GuessingGameWrapper.component,
     ))
 
     component(p)
