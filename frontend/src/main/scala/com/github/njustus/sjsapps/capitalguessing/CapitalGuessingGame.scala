@@ -15,6 +15,8 @@ object CapitalGuessingGame {
     lazy val capitals: Seq[String] = Random.shuffle(countryToCapitals.values.toSeq)
 
     val size: Int = countryToCapitals.size
+
+    def isMatch(country: String, capital: String): Boolean = countryToCapitals.get(country).contains(capital)
   }
 
   case class GameState(
@@ -27,13 +29,13 @@ object CapitalGuessingGame {
                         def getCapitalModifier(name: String): Option[String] = 
                           val selectedModifier = selectedCapital.filter(_ == name).map(_ => "cell-selected")
                           selectedModifier.orElse {
-                            finishedCountries.values.find(_ == name)
+                            finishedCountries.values.find(_ == name).map(_ => "cell-finished")
                           }
 
                         def getCountryModifier(name: String): Option[String] = 
                           val selectedModifier = selectedCountry.filter(_ == name).map(_ => "cell-selected")
                           selectedModifier.orElse {
-                            finishedCountries.keys.find(_ == name)
+                            finishedCountries.keys.find(_ == name).map(_ => "cell-finished")
                           }
 
   }
@@ -43,6 +45,26 @@ object CapitalGuessingGame {
 
     def selectCountry(country: String) = Focus[GameState](_.selectedCountry).replace(Some(country))
     def selectCapital(capital: String) = Focus[GameState](_.selectedCapital).replace(Some(capital))
+
+    def calculatePoints(p: Props)(gs: GameState): GameState = {
+      val newFinishedCountries = for {
+        (country, capital) <- gs.selectedCountry.zip(gs.selectedCapital)
+        if p.isMatch(country, capital)
+      } yield gs.finishedCountries + (country -> capital)
+
+      GameState(None, None, newFinishedCountries.getOrElse(gs.finishedCountries))
+
+      (gs.selectedCountry, gs.selectedCapital) match {
+        case (Some(country), Some(capital)) =>
+          val countries =
+            if (p.isMatch(country, capital)) gs.finishedCountries + (country -> capital)
+            else gs.finishedCountries
+
+          GameState(None, None, countries)      
+        case _ => gs
+      }
+
+    }
   }
 
   def zero(p: Props): GameState = GameState(None, None, Map.empty)
@@ -60,8 +82,15 @@ object CapitalGuessingGame {
   }
 
   private def renderFn(props: Props, state: Hooks.UseState[GameState]): VdomNode = {
-    val countryClicked = state.modState compose GameState.selectCountry
-    val capitalClicked = state.modState compose GameState.selectCapital
+    def countryClicked(name: String) = {
+      val fn = GameState.calculatePoints(props) compose GameState.selectCountry(name)
+      state.modState(fn)
+    }
+
+    def capitalClicked(name: String) = {
+      val fn = GameState.calculatePoints(props) compose GameState.selectCapital(name)
+      state.modState(fn)
+    }
 
     println(s"state: ${state.value}")
 
