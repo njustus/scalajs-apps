@@ -3,7 +3,7 @@ val circeVersion = "0.14.1"
 val Http4sVersion = "0.23.8"
 
 lazy val commonSettings = Seq(
-  scalaVersion := "3.3.0",
+  scalaVersion := "3.3.1",
   scalacOptions ++= Seq()
 )
 
@@ -17,7 +17,9 @@ lazy val shared = (crossProject(JSPlatform, JVMPlatform).crossType(CrossType.Pur
       "dev.optics" %%% "monocle-core" % "3.2.0",
       "dev.optics" %%% "monocle-macro" % "3.2.0",
       //support for java.time instances in Scala.JS
-      "io.github.cquiroz" %%% "scala-java-time" % "2.5.0"
+      "io.github.cquiroz" %%% "scala-java-time" % "2.5.0",
+      "co.fs2" %%% "fs2-core" % "3.9.2",
+      "co.fs2" %%% "fs2-scodec" % "3.9.2",
     )
   )
  .jvmSettings()
@@ -38,7 +40,7 @@ lazy val frontend = (project in file("frontend"))
         // Optional extensions to `core` & `extra` for Monocle
         "com.github.japgolly.scalajs-react" %%% "extra-ext-monocle2"       % ScalaJsReactVer,
         "com.github.japgolly.scalajs-react" %%% "extra-ext-monocle3"       % ScalaJsReactVer,
-        "org.scala-js" %%% "scalajs-dom" % "2.1.0"
+        "org.scala-js" %%% "scalajs-dom" % "2.1.0",
       )
   )
 
