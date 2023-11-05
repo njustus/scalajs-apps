@@ -16,27 +16,31 @@ object CapitalGuessingGame {
     lazy val capitals: Seq[String] = Random.shuffle(countryToCapitals.values.toSeq)
   }
 
-  case class GameState()
+  case class GameState(
+                        selectedCountry: Option[String],
+                        selectedCapital: Option[String],
+                        points: Int
+                      )
 
-  def zero(p:Props): GameState = {
-    GameState()
-  }
+  def zero(p: Props): GameState = GameState(None, None, 0)
 
   private def renderColumn(values: Seq[String]): VdomArray = {
     values.zipWithIndex.map { (name, idx) =>
       <.div(
-        ^.className:= "cell",
+        ^.className := "cell",
         name)
     }.toVdomArray
   }
 
   private def renderFn(props: Props, state: Hooks.UseState[GameState]): VdomNode = {
     <.div(^.className := "capital-guessing",
+      <.div(),
+      <.div(^.className:="score", "Points: ", state.value.points),
       <.div(
-        renderColumn( props.countries)
+        renderColumn(props.countries)
       ),
       <.div(
-        renderColumn( props.capitals)
+        renderColumn(props.capitals)
       )
     )
   }
