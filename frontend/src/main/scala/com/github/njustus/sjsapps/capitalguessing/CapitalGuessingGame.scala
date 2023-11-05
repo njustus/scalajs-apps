@@ -41,8 +41,8 @@ object CapitalGuessingGame {
   object GameState {
     def hasWon(p: Props)(gs: GameState): Boolean = p.size == gs.points
 
-    def selectCountry(country: String) = Focus[GameState](_.selectedCountry).set(Some(country))
-    def selectCapital(capital: String) = Focus[GameState](_.selectedCapital).set(Some(capital))
+    def selectCountry(country: String) = Focus[GameState](_.selectedCountry).replace(Some(country))
+    def selectCapital(capital: String) = Focus[GameState](_.selectedCapital).replace(Some(capital))
   }
 
   def zero(p: Props): GameState = GameState(None, None, Map.empty)
