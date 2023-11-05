@@ -14,6 +14,15 @@
       background-color: lightgray;
       font-weight: bold;
     }
+
+    &-selected {
+      background-color: aqua;
+      font-weight: bold;
+    }
+
+    &-finished {
+      background-color: lightseagreen;
+    }
   }
 
   .score {
