@@ -16,9 +16,9 @@ object GuessingGameWrapper {
   def zero = {
     val m = Map(
       "Germany" -> "Berlin",
-      "France" -> "Paris",
-      "Italy" -> "Rome",
-      "USA" -> "Washington"
+      "France"  -> "Paris",
+      "Italy"   -> "Rome",
+      "USA"     -> "Washington"
     )
 
     State(CapitalGuessingGame.Props(m))
@@ -30,7 +30,8 @@ object GuessingGameWrapper {
     )
   }
 
-  val component = ScalaFnComponent.withHooks[Props]
+  val component = ScalaFnComponent
+    .withHooks[Props]
     .useState(zero)
     .render((_, st) => renderFn(st))
 }

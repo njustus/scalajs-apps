@@ -12,7 +12,7 @@ object CapitalGuessingGame {
 
   case class Props(countryToCapitals: Map[String, String]) {
     lazy val countries: Seq[String] = Random.shuffle(countryToCapitals.keys.toSeq)
-    lazy val capitals: Seq[String] = Random.shuffle(countryToCapitals.values.toSeq)
+    lazy val capitals: Seq[String]  = Random.shuffle(countryToCapitals.values.toSeq)
 
     val size: Int = countryToCapitals.size
 
@@ -20,23 +20,23 @@ object CapitalGuessingGame {
   }
 
   case class GameState(
-                        selectedCountry: Option[String],
-                        selectedCapital: Option[String],
-                        finishedCountries: Map[String, String]
-                      ) {
-                        val points = finishedCountries.size
+      selectedCountry: Option[String],
+      selectedCapital: Option[String],
+      finishedCountries: Map[String, String]
+  ) {
+    val points = finishedCountries.size
 
-                        def getCapitalModifier(name: String): Option[String] = 
-                          val selectedModifier = selectedCapital.filter(_ == name).map(_ => "cell-selected")
-                          selectedModifier.orElse {
-                            finishedCountries.values.find(_ == name).map(_ => "cell-finished")
-                          }
+    def getCapitalModifier(name: String): Option[String] =
+      val selectedModifier = selectedCapital.filter(_ == name).map(_ => "cell-selected")
+      selectedModifier.orElse {
+        finishedCountries.values.find(_ == name).map(_ => "cell-finished")
+      }
 
-                        def getCountryModifier(name: String): Option[String] = 
-                          val selectedModifier = selectedCountry.filter(_ == name).map(_ => "cell-selected")
-                          selectedModifier.orElse {
-                            finishedCountries.keys.find(_ == name).map(_ => "cell-finished")
-                          }
+    def getCountryModifier(name: String): Option[String] =
+      val selectedModifier = selectedCountry.filter(_ == name).map(_ => "cell-selected")
+      selectedModifier.orElse {
+        finishedCountries.keys.find(_ == name).map(_ => "cell-finished")
+      }
 
   }
 
@@ -60,7 +60,7 @@ object CapitalGuessingGame {
             if (p.isMatch(country, capital)) gs.finishedCountries + (country -> capital)
             else gs.finishedCountries
 
-          GameState(None, None, countries)      
+          GameState(None, None, countries)
         case _ => gs
       }
 
@@ -69,15 +69,15 @@ object CapitalGuessingGame {
 
   def zero(p: Props): GameState = GameState(None, None, Map.empty)
 
-  private def renderColumn(values: Seq[String], onClick: String => SyncIO[Unit], valueModifier: String => Option[String]): VdomArray = {
+  private def renderColumn(
+      values: Seq[String],
+      onClick: String => SyncIO[Unit],
+      valueModifier: String => Option[String]
+  ): VdomArray = {
     values.zipWithIndex.map { (name, idx) =>
       val mod = valueModifier(name).getOrElse("")
 
-      <.div(
-        ^.key := idx,
-        ^.className := s"cell $mod",
-        ^.onClick --> onClick(name),
-        name)
+      <.div(^.key := idx, ^.className := s"cell $mod", ^.onClick --> onClick(name), name)
     }.toVdomArray
   }
 
@@ -94,12 +94,13 @@ object CapitalGuessingGame {
 
     println(s"state: ${state.value}")
 
-    if(GameState.hasWon(props)(state.value)) {
-      <.div(^.className:="cell-finished", "Congrats you won")
+    if (GameState.hasWon(props)(state.value)) {
+      <.div(^.className := "cell-finished", "Congrats you won")
     } else {
-      <.div(^.className := "capital-guessing",
+      <.div(
+        ^.className := "capital-guessing",
         <.div(),
-        <.div(^.className:="score", "Points: ", state.value.points),
+        <.div(^.className := "score", "Points: ", state.value.points),
         <.div(
           renderColumn(props.countries, countryClicked, state.value.getCountryModifier)
         ),
@@ -110,7 +111,8 @@ object CapitalGuessingGame {
     }
   }
 
-  val component = ScalaFnComponent.withHooks[Props]
+  val component = ScalaFnComponent
+    .withHooks[Props]
     .useStateBy(zero)
     .render(renderFn)
 }

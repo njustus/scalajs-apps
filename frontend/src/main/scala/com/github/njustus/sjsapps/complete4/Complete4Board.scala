@@ -13,20 +13,18 @@ import scala.concurrent.duration.*
 
 object Complete4Board {
   private def displayWinner(winner: Player): VdomNode =
-    <.div(^.className:="",
-      <.h2(^.className:="has-text-primary is-size-1 strong",
-        s"${winner.name} won!"
-      )
-    )
+    <.div(^.className := "", <.h2(^.className := "has-text-primary is-size-1 strong", s"${winner.name} won!"))
 
   private def playerState(state: Complete4State): VdomNode = {
-    <.div(^.className := "columns",
+    <.div(
+      ^.className := "columns",
       state.players.map { player =>
         val currentPlayerClass = if (state.isCurrentPlayer(player)) "has-text-weight-bold" else ""
         <.div(
-          ^.key := player.name,
+          ^.key       := player.name,
           ^.className := s"column is-full ${player.descriptionCssClass} ${currentPlayerClass}",
-          (if (state.isCurrentPlayer(player)) "* " else "") + player.name)
+          (if (state.isCurrentPlayer(player)) "* " else "") + player.name
+        )
       }.toVdomArray
     )
   }
@@ -38,17 +36,23 @@ object Complete4Board {
         state.modState(_.updateWinner(columnIdx)).to[IO]
 
     state.value.currentWinner.map(displayWinner).getOrElse {
-      <.div(^.className := "complete-4",
-        <.div(^.className := "complete-4-grid",
+      <.div(
+        ^.className := "complete-4",
+        <.div(
+          ^.className := "complete-4-grid",
           state.value.chipColumns.zipWithIndex.map { (col, colIdx) =>
-            <.div(^.key := s"column-$colIdx",
-              col.map { chip =>
-                <.div(
-                  ^.key := chip.id,
-                  ^.id := s"chip-${chip.id}",
-                  ChipComponent.component(ChipComponent.Props(chip, colIdx, onClick))
-                )
-              }.reverse.toVdomArray
+            <.div(
+              ^.key := s"column-$colIdx",
+              col
+                .map { chip =>
+                  <.div(
+                    ^.key := chip.id,
+                    ^.id  := s"chip-${chip.id}",
+                    ChipComponent.component(ChipComponent.Props(chip, colIdx, onClick))
+                  )
+                }
+                .reverse
+                .toVdomArray
             )
           }.toVdomArray
         ),
@@ -57,7 +61,8 @@ object Complete4Board {
     }
   }
 
-  val component = ScalaFnComponent.withHooks[Unit]
+  val component = ScalaFnComponent
+    .withHooks[Unit]
     .useState(Complete4State.zero)
     .render { (_, state) =>
       renderFn(state)

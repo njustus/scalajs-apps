@@ -1,6 +1,5 @@
 package com.github.njustus.sjsapps.complete4
 
-
 import com.github.njustus.sjsapps.util._
 import japgolly.scalajs.react._
 import japgolly.scalajs.react.vdom.html_<^._
@@ -11,15 +10,16 @@ import japgolly.scalajs.react.hooks.Hooks.UseState
 import org.scalajs.dom.intl.NumberFormatOptions
 
 object ChipComponent {
-  case class Props(chip: Chip, columnIdx:Int, onClick: Int => IO[Unit])
+  case class Props(chip: Chip, columnIdx: Int, onClick: Int => IO[Unit])
 
   private def renderFn(props: Props): VdomNode =
     <.div(
-      ^.className:=s"complete-4-chip ${props.chip.cssClass}",
+      ^.className := s"complete-4-chip ${props.chip.cssClass}",
       ^.onClick --> props.onClick(props.columnIdx)
     )
 
-  val component = ScalaFnComponent.withHooks[Props]
+  val component = ScalaFnComponent
+    .withHooks[Props]
     .render { (props) =>
       renderFn(props)
     }

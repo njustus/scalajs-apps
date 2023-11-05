@@ -5,7 +5,7 @@ object SeqUtils {
     if (idx < 0 || idx >= xs.length) None
     else Some(xs(idx))
 
-  def allEqual[A](xs:Seq[A]): Boolean =
+  def allEqual[A](xs: Seq[A]): Boolean =
     if (xs.size <= 1) true
     else xs.tail.forall(tl => tl == xs.head)
 }

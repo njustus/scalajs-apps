@@ -8,23 +8,24 @@ import japgolly.scalajs.react.hooks.Hooks.UseState
 
 object TippSelector {
 
-  case class Props(selectedTipPercentage:Option[Float],
-                   tipSelected: Float => IO[Unit])
+  case class Props(selectedTipPercentage: Option[Float], tipSelected: Float => IO[Unit])
 
-  private def percentButton(props:Props)(percent: Int) = {
-    val tip = (percent * 0.01f)
-    val activeColor = if(props.selectedTipPercentage.contains(tip)) "active" else ""
+  private def percentButton(props: Props)(percent: Int) = {
+    val tip         = (percent * 0.01f)
+    val activeColor = if (props.selectedTipPercentage.contains(tip)) "active" else ""
 
-    <.button(s"$percent %",
+    <.button(
+      s"$percent %",
       ^.className := s"button is-info is-outlined ${activeColor}",
-      ^.onClick --> props.tipSelected(tip))
+      ^.onClick --> props.tipSelected(tip)
+    )
   }
 
   def renderFn(props: Props): VdomNode = {
     val btn = percentButton(props)(_)
 
     <.div(
-      ^.className:="buttons has-addons is-justify-content-center",
+      ^.className := "buttons has-addons is-justify-content-center",
       btn(10),
       btn(20),
       btn(30),
@@ -32,7 +33,8 @@ object TippSelector {
     )
   }
 
-  val component = ScalaFnComponent.withHooks[Props]
+  val component = ScalaFnComponent
+    .withHooks[Props]
     .render { (props) =>
       renderFn(props)
     }

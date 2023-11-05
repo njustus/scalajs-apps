@@ -1,6 +1,5 @@
 package com.github.njustus.sjsapps.kanbanboard
 
-
 import com.github.njustus.sjsapps.*
 import japgolly.scalajs.react.*
 import japgolly.scalajs.react.vdom.html_<^.*
@@ -19,14 +18,16 @@ object BoardComponent {
       state.modState(fn).to[IO]
     }
 
-    <.div(^.className:="m-4 columns",
+    <.div(
+      ^.className := "m-4 columns",
       state.value.sortedColumns
-        .map((state, tickets) => ColumnComponent.component(ColumnComponent.Props(state,tickets, updateTicketColumn)))
+        .map((state, tickets) => ColumnComponent.component(ColumnComponent.Props(state, tickets, updateTicketColumn)))
         .toVdomArray
     )
   }
 
-  val component: PageComponent = ScalaFnComponent.withHooks[Unit]
+  val component: PageComponent = ScalaFnComponent
+    .withHooks[Unit]
     .useStateBy(props => dtos.board)
     .render((_, state) => renderFn(state))
 }

@@ -13,28 +13,27 @@ import java.time.LocalDate
 
 object ColumnComponent {
 
-  case class Props(state: TicketState,
-                   tickets:Seq[Ticket],
-                   changeTicketState: (TicketState, String) => IO[Unit]
-                  )
+  case class Props(state: TicketState, tickets: Seq[Ticket], changeTicketState: (TicketState, String) => IO[Unit])
 
-  private case class State(draggedTicket: Option[Ticket]=None)
+  private case class State(draggedTicket: Option[Ticket] = None)
 
   private def renderTicket(onDragStart: Ticket => SyntheticDragEvent[_] => IO[Unit])(ticket: Ticket): VdomNode = {
-    <.div(^.className:="panel-block card",
-      ^.draggable:=true,
+    <.div(
+      ^.className := "panel-block card",
+      ^.draggable := true,
       ^.onDragStart ==> onDragStart(ticket),
-      <.div(^.className:="card-content", ticket.name)
+      <.div(^.className := "card-content", ticket.name)
     )
   }
 
   private def renderFn(props: Props, state: Hooks.UseState[State]): VdomNode = {
-    val onDragStart = (draggedTicket:Ticket) => (ev:SyntheticDragEvent[_]) => {
-      println(s"going to drag ticket: $draggedTicket")
-      IO {
-        ev.dataTransfer.setData("text", draggedTicket.id)
+    val onDragStart = (draggedTicket: Ticket) =>
+      (ev: SyntheticDragEvent[_]) => {
+        println(s"going to drag ticket: $draggedTicket")
+        IO {
+          ev.dataTransfer.setData("text", draggedTicket.id)
+        }
       }
-    }
 
     val onDragStop = (ev: SyntheticDragEvent[_]) => {
       ev.preventDefault()
@@ -42,15 +41,17 @@ object ColumnComponent {
       props.changeTicketState(props.state, ticketId)
     }
 
-    <.div(^.className:="column panel",
+    <.div(
+      ^.className := "column panel",
       ^.onDrop ==> onDragStop,
-      ^.onDragOver ==> ((ev:SyntheticDragEvent[_]) => IO {ev.preventDefault()}),
-      <.div(^.className:="panel-heading", props.state.toString),
-        props.tickets.map(renderTicket(onDragStart)).toVdomArray
+      ^.onDragOver ==> ((ev: SyntheticDragEvent[_]) => IO { ev.preventDefault() }),
+      <.div(^.className := "panel-heading", props.state.toString),
+      props.tickets.map(renderTicket(onDragStart)).toVdomArray
     )
   }
 
-  val component = ScalaFnComponent.withHooks[Props]
+  val component = ScalaFnComponent
+    .withHooks[Props]
     .useState(State())
     .render(renderFn)
 }

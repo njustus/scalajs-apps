@@ -8,21 +8,21 @@ import cats.data.OptionT
 import cats.effect.kernel.Resource.Pure
 import cats.Id
 
-case class MemoryState(board: List[CardDto],
-                       players: List[Player],
-                       currentPlayersId: String) {
+case class MemoryState(board: List[CardDto], players: List[Player], currentPlayersId: String) {
   require(players.size == 2, "expected exactly 2 players")
 
   def isGameOver: Boolean = board.forall(_.isRemoved)
 
-  def winner: Option[Player] = OptionT.when[Id, Player](isGameOver) {
-    players.maxBy(_.points)
-  }.value
+  def winner: Option[Player] = OptionT
+    .when[Id, Player](isGameOver) {
+      players.maxBy(_.points)
+    }
+    .value
 
   def updateCard(key: String)(fn: CardDto => CardDto): MemoryState = {
     val newBoard = board.map {
       case card if card.id == key => fn(card)
-      case card => card
+      case card                   => card
     }
 
     this.copy(board = newBoard)
@@ -34,37 +34,39 @@ case class MemoryState(board: List[CardDto],
       this
     } else {
       val bothCards = openCards.flatMap { card =>
-        openCards.find(card2 => card2.id != card.id && card2.isSameIcon(card))
+        openCards
+          .find(card2 => card2.id != card.id && card2.isSameIcon(card))
           .map(card2 => List(card, card2))
           .getOrElse(Nil)
       }.toSet
 
       println(s"bothCards: $bothCards")
 
-      this.copy(board = board.map {
-        case card if bothCards.contains(card) => card.remove
-        case card if card.isOpen => card.flip
-        case card => card
-      },
+      this.copy(
+        board = board.map {
+          case card if bothCards.contains(card) => card.remove
+          case card if card.isOpen              => card.flip
+          case card                             => card
+        },
         players = players.map {
           case player if player.name == currentPlayersId =>
             player.copy(cards = player.cards ++ bothCards)
           case p => p
         },
-        currentPlayersId = nextPlayer.name,
+        currentPlayersId = nextPlayer.name
       )
     }
   }
 
   private def nextPlayer: Player = players match {
     case head :: second :: Nil if head.name == currentPlayersId => second
-    case first :: last :: Nil if last.name == currentPlayersId => first
-    case _ => players.head
+    case first :: last :: Nil if last.name == currentPlayersId  => first
+    case _                                                      => players.head
   }
 }
 
 object MemoryState {
-  case class Player(name:String, cssClass:String, cards: Set[CardDto]) {
+  case class Player(name: String, cssClass: String, cards: Set[CardDto]) {
     lazy val points: Int = cards.size
   }
 
@@ -83,7 +85,7 @@ object MemoryState {
     Icon.Props("otter"),
     Icon.Props("frog"),
     Icon.Props("horse"),
-    Icon.Props("crow"),
+    Icon.Props("crow")
   )
 
   def zero: MemoryState = {
@@ -105,7 +107,7 @@ object MemoryState {
 
     MemoryState(
 //      Random.shuffle(Random.shuffle(cards)),
-cards,
+      cards,
       players,
       players.head.name
     )

@@ -9,13 +9,14 @@ import japgolly.scalajs.react.hooks.Hooks.UseState
 import org.scalajs.dom.intl.NumberFormatOptions
 
 object Icon {
-  case class Props(icon:String, pack:String="solid")
+  case class Props(icon: String, pack: String = "solid")
 
   def renderFn(props: Props): VdomNode = {
-    <.i(^.className:=s"fa fa-${props.pack} fa-${props.icon}")
+    <.i(^.className := s"fa fa-${props.pack} fa-${props.icon}")
   }
 
-  val component = ScalaFnComponent.withHooks[Props]
+  val component = ScalaFnComponent
+    .withHooks[Props]
     .render { (props) =>
       renderFn(props)
     }
