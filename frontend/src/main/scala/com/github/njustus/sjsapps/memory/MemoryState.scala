@@ -106,8 +106,7 @@ object MemoryState {
     require(cards.distinctBy(_.id).size == cards.size, "Expected unique IDS per card")
 
     MemoryState(
-//      Random.shuffle(Random.shuffle(cards)),
-      cards,
+      Random.shuffle(Random.shuffle(cards)),
       players,
       players.head.name
     )

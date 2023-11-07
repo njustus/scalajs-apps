@@ -27,11 +27,16 @@ $board-bg-color: #44f;
     border-radius: 40px;
 
     &-a {
+
+      animation: flipPlayerA;
+      animation-duration: 1s;
       background-color: $player-a-color;
       border: 5px darken($player-a-color, 12) solid;
     }
 
     &-b {
+      animation: flipPlayerB;
+      animation-duration: 1s;
       background-color: $player-b-color;
       border: 5px darken($player-b-color, 12) solid;
     }
@@ -48,4 +53,24 @@ $board-bg-color: #44f;
   .player-b-color {
     color: $player-b-color;
   }
+}
+
+@mixin coinFlip($targetColor) {
+  from {
+    background-color: white;
+    border: 5px lightslategray solid;
+  }
+
+  to {
+    background-color: $targetColor;
+    border: 5px darken($targetColor, 12) solid;
+  }
+}
+
+@keyframes flipPlayerA {
+  @include coinFlip($player-a-color);
+}
+
+@keyframes flipPlayerB {
+  @include coinFlip($player-b-color);
 }
