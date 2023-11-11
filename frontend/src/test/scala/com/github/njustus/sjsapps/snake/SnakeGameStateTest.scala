@@ -20,13 +20,13 @@ class SnakeGameStateTest extends BaseTest {
   }
 
   it should "know the snake's coordinate" in {
-    state.board.snakePosition shouldBe SNAKE_START
+    state.board.snakePosition shouldBe Some(SNAKE_START)
   }
 
   it should "move the snake" in {
     val newState = SnakeGameState.handleKeypress(KeyboardInputs.Up)(state)
 //TODO snake lost
-    newState.board.snakePosition shouldBe Coordinate(20, 21)
+    newState.board.snakePosition shouldBe Some(Coordinate(20, 21))
   }
 
   "The coordinate monoid" should "have an identity" in {
