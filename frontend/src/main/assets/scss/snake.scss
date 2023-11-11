@@ -1,12 +1,19 @@
 .snake-game {
   .board {
-    background-color: lightgreen;
+    //justify-content: center;
     color: ghostwhite;
 
+    & > .column {
+      background-color: lightgreen;
+      padding: 0;
+      flex-grow: 0;
+    }
+
     .cell {
-      border: 2px solid black;
+      border: 1px solid black;
       width: 20px;
       height: 20px;
+      text-align: center;
     }
 
     .cell-snake {

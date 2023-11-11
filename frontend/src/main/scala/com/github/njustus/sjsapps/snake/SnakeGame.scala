@@ -22,7 +22,7 @@ object SnakeGame {
             column.zipWithIndex.map { (cell, rowIdx) =>
               <.div(^.className:=s"cell ${cell.cssClasses}", ^.key:=colIdx+"-"+rowIdx,
                 ^.onKeyUp ==> ((ev: SyntheticKeyboardEvent[_]) => onKeyUp(ev)),
-                cell.toString.take(1)
+                cell.show
               )
             }.toVdomArray
           )

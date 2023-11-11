@@ -4,13 +4,18 @@ enum Cell(val cssClasses: String) {
   case Empty extends Cell("")
   case Snake extends Cell("cell-snake")
   case Fruit extends Cell("cell-fruit")
+
+  def show: String = this match {
+    case Empty => ""
+    case x => x.toString.take(1)
+  }
 }
 
 case class Board(columns: List[List[Cell]])
 
 object Board {
   def zero = {
-    val size = 20
+    val size = 40
     val snakeIdx = size/2
     val fruitIdx = 16
 
