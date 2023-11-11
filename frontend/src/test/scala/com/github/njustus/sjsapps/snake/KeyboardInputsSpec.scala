@@ -9,8 +9,8 @@ class KeyboardInputsSpec extends BaseTest {
     val VALID_KEYCODES = Seq(
       (38, KeyboardInputs.Up),
       (40, KeyboardInputs.Down),
-      (39, KeyboardInputs.Left),
-      (37, KeyboardInputs.Right),
+      (37, KeyboardInputs.Left),
+      (39, KeyboardInputs.Right),
     )
 
   "KeyboardInputs" should "be parsed by keyCodes" in {
