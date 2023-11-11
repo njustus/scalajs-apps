@@ -27,8 +27,8 @@ object SnakeGameState {
   }.getOrElse(board)
 
   private def directionDelta(input: KeyboardInputs): Coordinate = input match {
-    case KeyboardInputs.Up => Coordinate(0, 1)
-    case KeyboardInputs.Down => Coordinate(0, -1)
+    case KeyboardInputs.Up => Coordinate(0, -1)
+    case KeyboardInputs.Down => Coordinate(0, 1)
     case KeyboardInputs.Left => Coordinate(-1, 0)
     case KeyboardInputs.Right => Coordinate(1, 0)
   }
