@@ -11,7 +11,23 @@ enum Cell(val cssClasses: String) {
   }
 }
 
-case class Board(columns: List[List[Cell]])
+case class Board(columns: List[List[Cell]]) {
+  val snakePosition: Coordinate = columns.zipWithIndex.flatMap { (row, colIdx) =>
+    row.zipWithIndex.collect {
+      case (Cell.Snake, rowIdx) => Coordinate(colIdx, rowIdx)
+    }
+  }.head
+
+  def replace(position: Coordinate, cell: Cell): Board =
+    val newBoard = this.columns.zipWithIndex.map { (row, colIdx) =>
+      row.zipWithIndex.map {
+        case (_, rowIdx) if position.isAt(colIdx, rowIdx) => cell
+        case (current, _) => current
+      }
+    }
+    
+    Board(newBoard)
+}
 
 object Board {
   def zero = {
