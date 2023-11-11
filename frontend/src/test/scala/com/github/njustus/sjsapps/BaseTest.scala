@@ -9,3 +9,5 @@ abstract class BaseTest
   with Matchers
   with BeforeAndAfter
   with Inspectors
+  with OptionValues
+  with EitherValues

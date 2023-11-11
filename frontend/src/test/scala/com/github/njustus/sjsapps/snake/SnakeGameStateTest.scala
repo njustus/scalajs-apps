@@ -20,7 +20,7 @@ class SnakeGameStateTest extends BaseTest {
   }
 
   it should "know the snake's coordinate" in {
-    state.board.snakePosition shouldBe Some(SNAKE_START)
+    state.board.snakePosition.value shouldBe SNAKE_START
   }
 
   it should "move the snake" in {
@@ -33,7 +33,7 @@ class SnakeGameStateTest extends BaseTest {
 
     forAll(directions) { (input, expected) =>
       val newState = SnakeGameState.handleKeypress(input)(state)
-      newState.board.snakePosition shouldBe Some(expected)
+      newState.board.snakePosition.value shouldBe expected
     }
   }
 

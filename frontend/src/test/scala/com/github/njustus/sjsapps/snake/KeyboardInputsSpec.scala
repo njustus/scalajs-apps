@@ -16,7 +16,7 @@ class KeyboardInputsSpec extends BaseTest {
   "KeyboardInputs" should "be parsed by keyCodes" in {
     forAll(VALID_KEYCODES) { case (keyCode:Int, expected:KeyboardInputs) =>
       val result = KeyboardInputs.fromKeyCode(keyCode)
-      result shouldBe Some(expected)
+      result.value shouldBe expected
     }
   }
 
