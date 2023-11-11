@@ -10,14 +10,16 @@ import org.scalajs.dom.{Window, console}
 
 object SnakeGame {
 
+  //TODO move snake in interval/game-loop
+
   type Props = Unit
 
-  private def renderFn(props: Props, state: Hooks.UseState[Board]): VdomNode = {
+  private def renderFn(props: Props, state: Hooks.UseState[SnakeGameState]): VdomNode = {
     def onKeyUp(value: SyntheticKeyboardEvent[_]): IO[Unit] = IO.println(s"key pressed ${value.key}")
 
     <.div(^.className:="snake-game",
       <.div(^.className:="board columns",
-        state.value.columns.zipWithIndex.map { (column, colIdx) =>
+        state.value.board.columns.zipWithIndex.map { (column, colIdx) =>
           <.div(^.className:="column", ^.key:="col-"+colIdx,
             column.zipWithIndex.map { (cell, rowIdx) =>
               <.div(^.className:=s"cell ${cell.cssClasses}", ^.key:=colIdx+"-"+rowIdx,
@@ -27,16 +29,19 @@ object SnakeGame {
             }.toVdomArray
           )
         }.toVdomArray
-      )
+      ),
+      <.div(s"keypress ${state.value.keyPress}")
     )
   }
 
   val component = ScalaFnComponent.withHooks[Props]
-    .useState(Board.zero)
-    .useEffectOnMountBy { (props, state) => IO.delay {
-      //TODO test change-propagation, cleanup listener
+    .useState(SnakeGameState.zero)
+    .useEffectOnMountBy { (props, state) => SyncIO {
       dom.window.addEventListener("keydown", (ev:SyntheticKeyboardEvent[_]) => {
-        console.log("key pressed", ev)
+        KeyboardInputs.fromKeyBoardEvent(ev).foreach { key =>
+          println(s"key $key")
+          state.modState(SnakeGameState.handleKeypress(key)).unsafeRunSync()
+        }
       })
       }
     }
