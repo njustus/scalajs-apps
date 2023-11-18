@@ -19,17 +19,15 @@ object NoteSearch {
       state.modState(_.copy(v))
     }
 
-    <.div(^.className:="columns",
-      <.input(^.className := "column is-9 input",
-        ^.placeholder := "Search",
-        ^.onChange ==> updateInput),
-        <.button(^.className := "button is-primary",
-          "Search",
-          ^.onClick --> props.updateSearch(state.value.searchInput))
+    <.div(
+      ^.className := "columns",
+      <.input(^.className  := "column is-9 input", ^.placeholder := "Search", ^.onChange ==> updateInput),
+      <.button(^.className := "button is-primary", "Search", ^.onClick --> props.updateSearch(state.value.searchInput))
     )
   }
 
-  val component = ScalaFnComponent.withHooks[Props]
+  val component = ScalaFnComponent
+    .withHooks[Props]
     .useState(State())
     .render(renderFn)
 }

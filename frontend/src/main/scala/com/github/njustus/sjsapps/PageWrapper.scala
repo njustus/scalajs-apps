@@ -52,8 +52,8 @@ object PageWrapper {
         "Kanban"            -> BoardComponent.component,
         "Complete 4"        -> Complete4Board.component,
         "Capital Game"      -> GuessingGameWrapper.component,
-        "Snake Game"      -> SnakeGame.component,
-        "Notes"      -> NotesWrapper.component,
+        "Snake Game"        -> SnakeGame.component,
+        "Notes"             -> NotesWrapper.component
       )
     )
 

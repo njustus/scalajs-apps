@@ -13,12 +13,14 @@ object NoteElement {
   type Props = NotesWrapper.Note
 
   private def renderFn(props: Props): VdomNode = {
-    <.div(^.className:="note",
-      <.div(^.className:="note-text", props.text),
-      <.div(^.className:="note-info", s"Created: ${formatting.formatDateTime(props.createdAt)}")
+    <.div(
+      ^.className := "note",
+      <.div(^.className := "note-text", props.text),
+      <.div(^.className := "note-info", s"Created: ${formatting.formatDateTime(props.createdAt)}")
     )
   }
 
-  val component = ScalaFnComponent.withHooks[Props]
+  val component = ScalaFnComponent
+    .withHooks[Props]
     .render(props => renderFn(props))
 }

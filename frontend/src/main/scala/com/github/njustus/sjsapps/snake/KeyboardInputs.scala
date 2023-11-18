@@ -4,9 +4,9 @@ import japgolly.scalajs.react.facade.SyntheticKeyboardEvent
 import org.scalajs.dom.console
 
 enum KeyboardInputs(val keyCodes: Int*) {
-  case Up extends KeyboardInputs(38, 87)
-  case Down extends KeyboardInputs(40, 83)
-  case Left extends KeyboardInputs(37, 65)
+  case Up    extends KeyboardInputs(38, 87)
+  case Down  extends KeyboardInputs(40, 83)
+  case Left  extends KeyboardInputs(37, 65)
   case Right extends KeyboardInputs(39, 68)
 
 }

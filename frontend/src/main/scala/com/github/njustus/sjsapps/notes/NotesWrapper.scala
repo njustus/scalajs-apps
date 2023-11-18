@@ -14,23 +14,17 @@ object NotesWrapper {
 
   val example: Seq[Note] = for {
     day <- 10 to 1 by -1
-  } yield Note(s"test-$day",
-    s"lorem ipsum sit $day",
-    Instant.now().minus(day, ChronoUnit.DAYS)
-  )
+  } yield Note(s"test-$day", s"lorem ipsum sit $day", Instant.now().minus(day, ChronoUnit.DAYS))
 
   type Props = Unit
 
-  case class Note(id: String,
-                  text: String,
-                  createdAt: Instant)
+  case class Note(id: String, text: String, createdAt: Instant)
 
-  case class State(search: Option[String],
-                   notes: Seq[Note]) {
+  case class State(search: Option[String], notes: Seq[Note]) {
 
     def filteredNotes: Seq[Note] = search match {
       case Some(txt) => notes.filter(n => n.text.contains(txt))
-      case None => notes
+      case None      => notes
     }
 
     def addNote(note: Note): State = this.copy(
@@ -40,28 +34,27 @@ object NotesWrapper {
 
   private def renderFn(props: Props, state: Hooks.UseState[State]): VdomNode = {
     def handleSearchUpdate(search: String): IO[Unit] =
-      if(search.isBlank) state.modState(_.copy(search = None)).to[IO]
+      if (search.isBlank) state.modState(_.copy(search = None)).to[IO]
       else state.modState(_.copy(search = Some(search.trim))).to[IO]
 
     def handleNewNote(note: Note): IO[Unit] =
       state.modState(_.addNote(note)).to[IO]
 
-    <.div(^.className := "notes-wrapper",
-      <.div(^.className:="search",
-        NoteSearch.component(NoteSearch.Props(handleSearchUpdate))
-      ),
-        <.div(^.className := "notes-grid",
-          state.value.filteredNotes.map { note =>
-            <.div(
-              ^.key := note.id,
-              NoteElement.component(note))
-          }.toVdomArray,
-          NewNote.component(NewNote.Props(handleNewNote))
-        )
+    <.div(
+      ^.className := "notes-wrapper",
+      <.div(^.className := "search", NoteSearch.component(NoteSearch.Props(handleSearchUpdate))),
+      <.div(
+        ^.className := "notes-grid",
+        state.value.filteredNotes.map { note =>
+          <.div(^.key := note.id, NoteElement.component(note))
+        }.toVdomArray,
+        NewNote.component(NewNote.Props(handleNewNote))
+      )
     )
   }
 
-  val component = ScalaFnComponent.withHooks[Props]
+  val component = ScalaFnComponent
+    .withHooks[Props]
     .useState(State(None, example))
     .render(renderFn)
 }
