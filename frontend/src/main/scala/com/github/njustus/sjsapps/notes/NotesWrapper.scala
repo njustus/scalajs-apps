@@ -32,12 +32,19 @@ object NotesWrapper {
       case Some(txt) => notes.filter(n => n.text.contains(txt))
       case None => notes
     }
+
+    def addNote(note: Note): State = this.copy(
+      notes = note +: notes
+    )
   }
 
   private def renderFn(props: Props, state: Hooks.UseState[State]): VdomNode = {
     def handleSearchUpdate(search: String): IO[Unit] =
       if(search.isBlank) state.modState(_.copy(search = None)).to[IO]
       else state.modState(_.copy(search = Some(search.trim))).to[IO]
+
+    def handleNewNote(note: Note): IO[Unit] =
+      state.modState(_.addNote(note)).to[IO]
 
     <.div(^.className := "notes-wrapper",
       <.div(^.className:="search",
@@ -49,7 +56,7 @@ object NotesWrapper {
               ^.key := note.id,
               NoteElement.component(note))
           }.toVdomArray,
-          NewNote.component()
+          NewNote.component(NewNote.Props(handleNewNote))
         )
     )
   }
