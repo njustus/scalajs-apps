@@ -1,6 +1,7 @@
 .notes-wrapper {
   display: grid;
-  grid-template-rows: 10%;
+  grid-template-rows: 10% 90%;
+  grid-row-gap: 20px;
 
   .notes-grid {
     display: grid;

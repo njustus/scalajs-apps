@@ -26,19 +26,31 @@ object NotesWrapper {
                   createdAt: Instant)
 
   case class State(search: Option[String],
-                   notes: Seq[Note])
+                   notes: Seq[Note]) {
+
+    def filteredNotes: Seq[Note] = search match {
+      case Some(txt) => notes.filter(n => n.text.contains(txt))
+      case None => notes
+    }
+
+  }
 
   private def renderFn(props: Props, state: Hooks.UseState[State]): VdomNode = {
-    <.div(^.className := "notes-wrapper columns",
-      <.div(^.className := "column is-full",
+    def handleSearchUpdate(search: String): IO[Unit] =
+      if(search.isBlank) state.modState(_.copy(search = None)).to[IO]
+      else state.modState(_.copy(search = Some(search.trim))).to[IO]
+
+    <.div(^.className := "notes-wrapper",
+      <.div(^.className:="search",
+        NoteSearch.component(NoteSearch.Props(handleSearchUpdate))
+      ),
         <.div(^.className := "notes-grid",
-          state.value.notes.map { note =>
+          state.value.filteredNotes.map { note =>
             <.div(
               ^.key := note.id,
               NoteElement.component(note))
           }.toVdomArray
         )
-      )
     )
   }
 
