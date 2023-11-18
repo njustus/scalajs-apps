@@ -32,7 +32,6 @@ object NotesWrapper {
       case Some(txt) => notes.filter(n => n.text.contains(txt))
       case None => notes
     }
-
   }
 
   private def renderFn(props: Props, state: Hooks.UseState[State]): VdomNode = {
@@ -49,7 +48,8 @@ object NotesWrapper {
             <.div(
               ^.key := note.id,
               NoteElement.component(note))
-          }.toVdomArray
+          }.toVdomArray,
+          NewNote.component()
         )
     )
   }
