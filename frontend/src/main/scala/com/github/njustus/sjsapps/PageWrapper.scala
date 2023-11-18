@@ -30,7 +30,7 @@ object PageWrapper {
     }
 
     <.div(
-      ^.className := "column columns",
+      ^.className := "column is-full columns",
       <.aside(^.className := "column menu", <.ul(^.className := "menu-list", menuItems.toVdomArray)),
       <.div(^.className   := "column is-four-fifths", props.pages(state.value.selectedKey)())
     )

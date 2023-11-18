@@ -1,4 +1,7 @@
 .notes-wrapper {
+  display: grid;
+  grid-template-rows: 10%;
+
   .notes-grid {
     display: grid;
     grid-template-columns: 1fr 1fr 1fr;

@@ -9,6 +9,10 @@ small {
   font-weight: bold;
 }
 
+.columns {
+  margin: 0;
+}
+
 @import './memory';
 @import './complete-4';
 @import './capital-guessing';
