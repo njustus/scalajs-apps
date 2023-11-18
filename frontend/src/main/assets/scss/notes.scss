@@ -1,0 +1,28 @@
+.notes-wrapper {
+  .notes-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    grid-row-gap: 10px;
+    grid-column-gap: 10px;
+
+
+
+    .note {
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+
+      height: 300px;
+      padding: 10px;
+
+      background-color: lightslategray;
+      border: 2px solid lightgray;
+
+      color: ghostwhite;
+    }
+
+    .note-info {
+      font-size: 8px;
+    }
+  }
+}
