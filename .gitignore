@@ -9,6 +9,7 @@
 .bsp
 .bloop
 .vscode
+.scala-build
 
 *.log
 *.class

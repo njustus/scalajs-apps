@@ -11,36 +11,28 @@ enum Cell(val cssClasses: String) {
   }
 }
 
-case class Board(columns: List[List[Cell]]) {
-  val snakePosition: Option[Coordinate] = columns.zipWithIndex.flatMap { (row, colIdx) =>
-    row.zipWithIndex.collect { case (Cell.Snake, rowIdx) =>
-      Coordinate(colIdx, rowIdx)
-    }
-  }.headOption
-
-  def replace(position: Coordinate, cell: Cell): Board =
-    val newBoard = this.columns.zipWithIndex.map { (row, colIdx) =>
-      row.zipWithIndex.map {
-        case (_, rowIdx) if position.isAt(colIdx, rowIdx) => cell
-        case (current, _)                                 => current
+case class Board(size: Int,
+                 fruit: Coordinate,
+                 snake: Set[Coordinate]) {
+  def grid: List[List[Cell]] =
+    List.tabulate(size) { columnIdx =>
+      List.tabulate(size) {
+            //TODO impl snake
+        case rowIdx if fruit.isAt(columnIdx, rowIdx) => Cell.Fruit
+        case rowIdx if snake.contains(Coordinate(columnIdx, rowIdx)) => Cell.Snake
+        case _ => Cell.Empty
       }
     }
-
-    Board(newBoard)
 }
 
 object Board {
-  def zero = {
+  def zero: Board = {
     val size     = 40
     val snakeIdx = size / 2
     val fruitIdx = 16
 
-    Board(List.tabulate(size) { columnIdx =>
-      List.tabulate(size) {
-        case rowIdx if columnIdx == snakeIdx && rowIdx == fruitIdx => Cell.Fruit
-        case rowIdx if columnIdx == snakeIdx && rowIdx == snakeIdx => Cell.Snake
-        case _                                                     => Cell.Empty
-      }
-    })
+    val  snake = Coordinate(snakeIdx, snakeIdx)
+    val fruit = Coordinate(fruitIdx, snakeIdx)
+    Board(size, fruit, Set(snake))
   }
 }

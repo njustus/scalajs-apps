@@ -19,15 +19,8 @@ object SnakeGameState {
       keyPress = Some(ev)
     )
 
-  private def moveSnake(delta: Coordinate, board: Board): Board = board.snakePosition
-    .map { sp =>
-      val newSnakePosition = sp |+| delta
-
-      board
-        .replace(sp, Cell.Empty)
-        .replace(newSnakePosition, Cell.Snake)
-    }
-    .getOrElse(board)
+//TODO impl this
+  private def moveSnake(delta: Coordinate, board: Board): Board = ???
 
   private def directionDelta(input: KeyboardInputs): Coordinate = input match {
     case KeyboardInputs.Up    => Coordinate(0, -1)

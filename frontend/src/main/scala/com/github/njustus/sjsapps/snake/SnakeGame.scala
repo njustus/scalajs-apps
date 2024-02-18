@@ -21,7 +21,7 @@ object SnakeGame {
       ^.className := "snake-game",
       <.div(
         ^.className := "board columns",
-        state.value.board.columns.zipWithIndex.map { (column, colIdx) =>
+        state.value.board.grid.zipWithIndex.map { (column, colIdx) =>
           <.div(
             ^.className := "column",
             ^.key       := "col-" + colIdx,
