@@ -27,14 +27,18 @@ case class Board(size: Int,
 
 object Board {
   type Snake = List[Coordinate]
-  
+
   def zero: Board = {
     val size     = 40
     val snakeIdx = size / 2
     val fruitIdx = 16
 
-    val  snake = Coordinate(snakeIdx, snakeIdx)
+    val  snake = List(
+      Coordinate(snakeIdx, snakeIdx),
+      Coordinate(snakeIdx-1, snakeIdx)
+    )
+
     val fruit = Coordinate(fruitIdx, snakeIdx)
-    Board(size, fruit, List(snake))
+    Board(size, fruit, snake)
   }
 }
