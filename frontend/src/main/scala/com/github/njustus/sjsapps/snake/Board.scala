@@ -13,7 +13,7 @@ enum Cell(val cssClasses: String) {
 
 case class Board(size: Int,
                  fruit: Coordinate,
-                 snake: Set[Coordinate]) {
+                 snake: Board.Snake) {
   def grid: List[List[Cell]] =
     List.tabulate(size) { columnIdx =>
       List.tabulate(size) {
@@ -26,6 +26,8 @@ case class Board(size: Int,
 }
 
 object Board {
+  type Snake = List[Coordinate]
+  
   def zero: Board = {
     val size     = 40
     val snakeIdx = size / 2
@@ -33,6 +35,6 @@ object Board {
 
     val  snake = Coordinate(snakeIdx, snakeIdx)
     val fruit = Coordinate(fruitIdx, snakeIdx)
-    Board(size, fruit, Set(snake))
+    Board(size, fruit, List(snake))
   }
 }

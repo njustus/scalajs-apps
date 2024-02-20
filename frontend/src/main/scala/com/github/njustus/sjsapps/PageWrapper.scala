@@ -7,7 +7,7 @@ import com.github.njustus.sjsapps.kanbanboard.BoardComponent
 import com.github.njustus.sjsapps.tippscalculator.TippsCalculator
 import com.github.njustus.sjsapps.memory.Memory
 import com.github.njustus.sjsapps.notes.NotesWrapper
-import com.github.njustus.sjsapps.snake.SnakeGame
+import com.github.njustus.sjsapps.snake.{SnakeGame, SnakeGameWrapper}
 import japgolly.scalajs.react.*
 import japgolly.scalajs.react.vdom.*
 import japgolly.scalajs.react.vdom.html_<^.*
@@ -39,7 +39,7 @@ object PageWrapper {
 
   private val component = ScalaFnComponent
     .withHooks[Props]
-    .useStateBy(props => State("Notes"))
+    .useStateBy(props => State("Snake Game"))
     .render(renderFn)
 
   def build() = {
@@ -52,7 +52,7 @@ object PageWrapper {
         "Kanban"            -> BoardComponent.component,
         "Complete 4"        -> Complete4Board.component,
         "Capital Game"      -> GuessingGameWrapper.component,
-        "Snake Game"        -> SnakeGame.component,
+        "Snake Game"        -> SnakeGameWrapper.component,
         "Notes"             -> NotesWrapper.component
       )
     )
