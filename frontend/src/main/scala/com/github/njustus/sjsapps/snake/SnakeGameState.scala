@@ -16,6 +16,7 @@ case class SnakeGameState(
 object SnakeGameState {
   //TODO use lens for updating state
   //TODO detect fruit collision
+  //TODO detect out-of-grid and begin at start
   def zero: SnakeGameState = SnakeGameState(Board.zero, KeyboardInputs.Right)
 
   def handleKeypress(ev: KeyboardInputs)(gs: SnakeGameState): SnakeGameState =
