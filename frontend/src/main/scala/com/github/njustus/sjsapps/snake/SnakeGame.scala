@@ -14,8 +14,6 @@ import scala.language.postfixOps
 
 object SnakeGame {
 
-  // TODO move snake in interval/game-loop
-
   case class Props(tickSpeed: Duration = 0.5 second)
 
   private def renderFn(props: Props, state: Hooks.UseState[SnakeGameState]): VdomNode = {
@@ -51,7 +49,7 @@ object SnakeGame {
       SyncIO {
         dom.window.setInterval(() => {
           println(s"moving snake..")
-          state.modState(SnakeGameState.moveSnake).unsafeRunSync()
+          state.modState(SnakeGameState.tick).unsafeRunSync()
         }, props.tickSpeed.toMillis)
 
         dom.window.addEventListener(

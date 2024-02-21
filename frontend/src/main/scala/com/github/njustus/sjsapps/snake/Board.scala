@@ -12,12 +12,13 @@ enum Cell(val cssClasses: String) {
 }
 
 case class Board(size: Int,
-                 fruit: Coordinate,
+                 fruit: Board.Fruit,
                  snake: Board.Snake) {
+  def isSnakeAtFruit: Boolean = snake.head == fruit
+  
   def grid: List[List[Cell]] =
     List.tabulate(size) { columnIdx =>
       List.tabulate(size) {
-            //TODO impl snake
         case rowIdx if fruit.isAt(columnIdx, rowIdx) => Cell.Fruit
         case rowIdx if snake.contains(Coordinate(columnIdx, rowIdx)) => Cell.Snake
         case _ => Cell.Empty
@@ -27,6 +28,7 @@ case class Board(size: Int,
 
 object Board {
   type Snake = List[Coordinate]
+  type Fruit = Coordinate
 
   def zero: Board = {
     val size     = 40
@@ -41,4 +43,10 @@ object Board {
     val fruit = Coordinate(fruitIdx, snakeIdx)
     Board(size, fruit, snake)
   }
+  
+  def newFruit(boardSize: Int): Fruit =
+    Coordinate(
+      scala.util.Random.between(0, boardSize),
+      scala.util.Random.between(0, boardSize)
+    )
 }

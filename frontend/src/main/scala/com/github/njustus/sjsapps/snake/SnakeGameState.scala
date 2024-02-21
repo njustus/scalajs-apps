@@ -15,10 +15,10 @@ case class SnakeGameState(
                          )
 
 object SnakeGameState {
-  private val snakeLens = GenLens[SnakeGameState](_.board.snake)
-  private val fruitLens = GenLens[SnakeGameState](_.board.fruit)
+  private val boardLens: Lens[SnakeGameState, Board] = GenLens[SnakeGameState](_.board)
+  private val snakeLens: Lens[SnakeGameState, Board.Snake] = GenLens[SnakeGameState](_.board.snake)
+  private val fruitLens: Lens[SnakeGameState, Board.Fruit] = GenLens[SnakeGameState](_.board.fruit)
 
-  //TODO detect fruit collision
   //TODO detect out-of-grid and begin at start
   def zero: SnakeGameState = SnakeGameState(Board.zero, KeyboardInputs.Right)
 
@@ -26,7 +26,23 @@ object SnakeGameState {
     val delta = directionDelta(ev)
     moveSnake(delta)(gs).copy(snakeDirection = ev)
 
-  def moveSnake(gs: SnakeGameState): SnakeGameState = moveSnake(directionDelta(gs.snakeDirection))(gs)
+  def tick(gs: SnakeGameState): SnakeGameState =
+    if(gs.board.isSnakeAtFruit) {
+      eatFruit(gs)
+    } else {
+      val delta = directionDelta(gs.snakeDirection)
+      moveSnake(delta)(gs)
+    }
+
+  private def eatFruit(gs: SnakeGameState): SnakeGameState = {
+    val newFruit = Board.newFruit(gs.board.size)
+    boardLens.modify { board =>
+      board.copy(
+        fruit = newFruit,
+        snake = board.fruit :: board.snake
+      )
+    }(gs)
+  }
 
   private def moveSnake(delta: Coordinate): SnakeGameState => SnakeGameState =
     snakeLens.modify { snake =>
