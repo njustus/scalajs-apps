@@ -39,7 +39,8 @@ object SnakeGame {
       ),
       <.div(
         ^.className:= "column",        
-        <.div(s"keypress ${state.value.snakeDirection}")
+        <.div(s"keypress ${state.value.snakeDirection}"),
+        <.div(s"Highscore ${state.value.highScore}")
       )
     )
   }

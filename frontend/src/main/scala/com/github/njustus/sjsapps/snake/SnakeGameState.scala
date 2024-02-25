@@ -14,6 +14,7 @@ case class SnakeGameState(
                            snakeDirection: KeyboardInputs
                          ) {
   val boardSize = board.size
+  val highScore = board.eatenFruits
 }
 
 object SnakeGameState {
@@ -22,7 +23,6 @@ object SnakeGameState {
   private val fruitLens: Lens[SnakeGameState, Board.Fruit] = GenLens[SnakeGameState](_.board.fruit)
   private val directionLens = GenLens[SnakeGameState](_.snakeDirection)
 
-  //TODO detect out-of-grid and begin at start
   def zero: SnakeGameState = SnakeGameState(Board.zero, KeyboardInputs.Right)
 
   def handleKeypress(ev: KeyboardInputs): SnakeGameState => SnakeGameState = directionLens.set(ev)

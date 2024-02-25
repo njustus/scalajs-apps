@@ -14,6 +14,9 @@ enum Cell(val cssClasses: String) {
 case class Board(size: Int,
                  fruit: Board.Fruit,
                  snake: Board.Snake) {
+
+  def eatenFruits: Int = scala.math.max(0, snake.size-2)
+
   def isSnakeAtFruit: Boolean = snake.head == fruit
   
   def grid: List[List[Cell]] =
