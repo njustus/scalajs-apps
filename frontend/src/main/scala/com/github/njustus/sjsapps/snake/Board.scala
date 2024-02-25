@@ -31,9 +31,9 @@ object Board {
   type Fruit = Coordinate
 
   def zero: Board = {
-    val size     = 40
+    val size     = 20
     val snakeIdx = size / 2
-    val fruitIdx = 16
+    val fruitIdx = 12
 
     val  snake = List(
       Coordinate(snakeIdx, snakeIdx),

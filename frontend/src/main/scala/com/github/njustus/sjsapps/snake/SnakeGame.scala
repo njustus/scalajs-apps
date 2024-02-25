@@ -20,7 +20,7 @@ object SnakeGame {
     def onKeyUp(value: SyntheticKeyboardEvent[_]): IO[Unit] = IO.println(s"key pressed ${value.key}")
 
     <.div(
-      ^.className := "snake-game",
+      ^.className := "snake-game columns is-centered",
       <.div(
         ^.className := "board columns",
         state.value.board.grid.zipWithIndex.map { (column, colIdx) =>
@@ -31,14 +31,16 @@ object SnakeGame {
               <.div(
                 ^.className := s"cell ${cell.cssClasses}",
                 ^.key       := colIdx + "-" + rowIdx,
-                ^.onKeyUp ==> ((ev: SyntheticKeyboardEvent[_]) => onKeyUp(ev)),
-                cell.show
+                ^.onKeyUp ==> ((ev: SyntheticKeyboardEvent[_]) => onKeyUp(ev))
               )
             }.toVdomArray
           )
         }.toVdomArray
       ),
-      <.div(s"keypress ${state.value.snakeDirection}")
+      <.div(
+        ^.className:= "column",        
+        <.div(s"keypress ${state.value.snakeDirection}")
+      )
     )
   }
 

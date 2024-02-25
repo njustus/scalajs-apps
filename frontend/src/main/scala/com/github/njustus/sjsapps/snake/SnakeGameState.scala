@@ -18,13 +18,12 @@ object SnakeGameState {
   private val boardLens: Lens[SnakeGameState, Board] = GenLens[SnakeGameState](_.board)
   private val snakeLens: Lens[SnakeGameState, Board.Snake] = GenLens[SnakeGameState](_.board.snake)
   private val fruitLens: Lens[SnakeGameState, Board.Fruit] = GenLens[SnakeGameState](_.board.fruit)
+  private val directionLens = GenLens[SnakeGameState](_.snakeDirection)
 
   //TODO detect out-of-grid and begin at start
   def zero: SnakeGameState = SnakeGameState(Board.zero, KeyboardInputs.Right)
 
-  def handleKeypress(ev: KeyboardInputs)(gs: SnakeGameState): SnakeGameState =
-    val delta = directionDelta(ev)
-    moveSnake(delta)(gs).copy(snakeDirection = ev)
+  def handleKeypress(ev: KeyboardInputs): SnakeGameState => SnakeGameState = directionLens.set(ev)
 
   def tick(gs: SnakeGameState): SnakeGameState =
     if(gs.board.isSnakeAtFruit) {
