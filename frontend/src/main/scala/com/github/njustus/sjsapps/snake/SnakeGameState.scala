@@ -12,7 +12,9 @@ import monocle.macros.GenLens
 case class SnakeGameState(
                            board: Board,
                            snakeDirection: KeyboardInputs
-                         )
+                         ) {
+  val boardSize = board.size
+}
 
 object SnakeGameState {
   private val boardLens: Lens[SnakeGameState, Board] = GenLens[SnakeGameState](_.board)
@@ -43,11 +45,19 @@ object SnakeGameState {
     }(gs)
   }
 
-  private def moveSnake(delta: Coordinate): SnakeGameState => SnakeGameState =
+  private def moveSnake(delta: Coordinate)(gs: SnakeGameState): SnakeGameState =
     snakeLens.modify { snake =>
       val tail = snake.init
-      (snake.head |+| delta) :: tail
-    }
+      val newHead = (snake.head |+| delta) match {
+        case Coordinate(x, y) if(x < 0) => Coordinate(gs.boardSize-1, y)
+        case Coordinate(x, y) if(x >= gs.boardSize) => Coordinate(0, y)
+        case Coordinate(x, y) if(y < 0) => Coordinate(x, gs.boardSize-1)
+        case Coordinate(x, y) if(y >= gs.boardSize) => Coordinate(x, 0)
+        case c => c
+      }
+      
+      newHead :: tail
+    }(gs)
 
   private def directionDelta(input: KeyboardInputs): Coordinate = input match {
     case KeyboardInputs.Up    => Coordinate(0, -1)
