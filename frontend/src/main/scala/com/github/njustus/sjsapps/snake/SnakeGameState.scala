@@ -15,6 +15,7 @@ case class SnakeGameState(
                          ) {
   val boardSize = board.size
   val highScore = board.eatenFruits
+  val isGameOver = board.detectGameOver
 }
 
 object SnakeGameState {
@@ -28,7 +29,8 @@ object SnakeGameState {
   def handleKeypress(ev: KeyboardInputs): SnakeGameState => SnakeGameState = directionLens.set(ev)
 
   def tick(gs: SnakeGameState): SnakeGameState =
-    if(gs.board.isSnakeAtFruit) {
+    if(gs.isGameOver) gs
+    else if(gs.board.isSnakeAtFruit) {
       eatFruit(gs)
     } else {
       val delta = directionDelta(gs.snakeDirection)

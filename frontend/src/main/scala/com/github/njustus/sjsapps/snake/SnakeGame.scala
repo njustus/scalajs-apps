@@ -16,27 +16,39 @@ object SnakeGame {
 
   case class Props(tickSpeed: Duration = 0.5 second)
 
-  private def renderFn(props: Props, state: Hooks.UseState[SnakeGameState]): VdomNode = {
-    def onKeyUp(value: SyntheticKeyboardEvent[_]): IO[Unit] = IO.println(s"key pressed ${value.key}")
-
-    <.div(
-      ^.className := "snake-game columns is-centered",
+  private def renderBoard(state: SnakeGameState): VdomNode = {
       <.div(
         ^.className := "board columns",
-        state.value.board.grid.zipWithIndex.map { (column, colIdx) =>
+        state.board.grid.zipWithIndex.map { (column, colIdx) =>
           <.div(
             ^.className := "column",
             ^.key       := "col-" + colIdx,
             column.zipWithIndex.map { (cell, rowIdx) =>
               <.div(
                 ^.className := s"cell ${cell.cssClasses}",
-                ^.key       := colIdx + "-" + rowIdx,
-                ^.onKeyUp ==> ((ev: SyntheticKeyboardEvent[_]) => onKeyUp(ev))
+                ^.key       := colIdx + "-" + rowIdx
               )
             }.toVdomArray
           )
         }.toVdomArray
-      ),
+      )    
+  }
+
+  private def renderHighscore(state: SnakeGameState): VdomNode = {
+    <.div(
+      ^.className := "column",
+      <.h4(
+        s"GameOver! Your Highscore is: ${state.highScore}",
+        s"GameState: ${state.board}"
+      )
+    )
+  }
+
+  private def renderFn(props: Props, state: Hooks.UseState[SnakeGameState]): VdomNode = {
+    <.div(
+      ^.className := "snake-game columns is-centered",
+      if(state.value.isGameOver) renderHighscore(state.value)
+      else renderBoard(state.value),
       <.div(
         ^.className:= "column",        
         <.div(s"keypress ${state.value.snakeDirection}"),
@@ -51,7 +63,6 @@ object SnakeGame {
     .useEffectOnMountBy { (props, state) =>
       SyncIO {
         dom.window.setInterval(() => {
-          println(s"moving snake..")
           state.modState(SnakeGameState.tick).unsafeRunSync()
         }, props.tickSpeed.toMillis)
 

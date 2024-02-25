@@ -18,7 +18,8 @@ case class Board(size: Int,
   def eatenFruits: Int = scala.math.max(0, snake.size-2)
 
   def isSnakeAtFruit: Boolean = snake.head == fruit
-  
+  def detectGameOver: Boolean =  false // snake.size - snake.toSet.size > 1
+
   def grid: List[List[Cell]] =
     List.tabulate(size) { columnIdx =>
       List.tabulate(size) {
