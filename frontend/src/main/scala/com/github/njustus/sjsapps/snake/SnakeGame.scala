@@ -17,21 +17,21 @@ object SnakeGame {
   case class Props(tickSpeed: Duration = 0.5 second)
 
   private def renderBoard(state: SnakeGameState): VdomNode = {
-      <.div(
-        ^.className := "board columns",
-        state.board.grid.zipWithIndex.map { (column, colIdx) =>
-          <.div(
-            ^.className := "column",
-            ^.key       := "col-" + colIdx,
-            column.zipWithIndex.map { (cell, rowIdx) =>
-              <.div(
-                ^.className := s"cell ${cell.cssClasses}",
-                ^.key       := colIdx + "-" + rowIdx
-              )
-            }.toVdomArray
-          )
-        }.toVdomArray
-      )    
+    <.div(
+      ^.className := "board columns",
+      state.board.grid.zipWithIndex.map { (column, colIdx) =>
+        <.div(
+          ^.className := "column",
+          ^.key       := "col-" + colIdx,
+          column.zipWithIndex.map { (cell, rowIdx) =>
+            <.div(
+              ^.className := s"cell ${cell.cssClasses}",
+              ^.key       := colIdx + "-" + rowIdx
+            )
+          }.toVdomArray
+        )
+      }.toVdomArray
+    )
   }
 
   private def renderHighscore(state: SnakeGameState): VdomNode = {
@@ -47,10 +47,10 @@ object SnakeGame {
   private def renderFn(props: Props, state: Hooks.UseState[SnakeGameState]): VdomNode = {
     <.div(
       ^.className := "snake-game columns is-centered",
-      if(state.value.isGameOver) renderHighscore(state.value)
+      if (state.value.isGameOver) renderHighscore(state.value)
       else renderBoard(state.value),
       <.div(
-        ^.className:= "column",        
+        ^.className := "column",
         <.div(s"keypress ${state.value.snakeDirection}"),
         <.div(s"Highscore ${state.value.highScore}")
       )
@@ -62,9 +62,10 @@ object SnakeGame {
     .useState(SnakeGameState.zero)
     .useEffectOnMountBy { (props, state) =>
       SyncIO {
-        dom.window.setInterval(() => {
-          state.modState(SnakeGameState.tick).unsafeRunSync()
-        }, props.tickSpeed.toMillis)
+        dom.window.setInterval(
+          () => state.modState(SnakeGameState.tick).unsafeRunSync(),
+          props.tickSpeed.toMillis
+        )
 
         dom.window.addEventListener(
           "keydown",

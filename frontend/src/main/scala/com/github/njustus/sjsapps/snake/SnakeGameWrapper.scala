@@ -16,7 +16,8 @@ object SnakeGameWrapper {
     SnakeGame.component(SnakeGame.Props())
   }
 
-  val component = ScalaFnComponent.withHooks[Props]
+  val component = ScalaFnComponent
+    .withHooks[Props]
     .useState(())
     .render((p, s) => renderFn(p, s))
 }

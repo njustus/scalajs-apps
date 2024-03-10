@@ -10,27 +10,27 @@ import scala.language.postfixOps
 import monocle.macros.GenLens
 
 case class SnakeGameState(
-                           board: Board,
-                           snakeDirection: KeyboardInputs
-                         ) {
-  val boardSize = board.size
-  val highScore = board.eatenFruits
+    board: Board,
+    snakeDirection: KeyboardInputs
+) {
+  val boardSize  = board.size
+  val highScore  = board.eatenFruits
   val isGameOver = board.detectGameOver
 }
 
 object SnakeGameState {
-  private val boardLens: Lens[SnakeGameState, Board] = GenLens[SnakeGameState](_.board)
+  private val boardLens: Lens[SnakeGameState, Board]       = GenLens[SnakeGameState](_.board)
   private val snakeLens: Lens[SnakeGameState, Board.Snake] = GenLens[SnakeGameState](_.board.snake)
   private val fruitLens: Lens[SnakeGameState, Board.Fruit] = GenLens[SnakeGameState](_.board.fruit)
-  private val directionLens = GenLens[SnakeGameState](_.snakeDirection)
+  private val directionLens                                = GenLens[SnakeGameState](_.snakeDirection)
 
   def zero: SnakeGameState = SnakeGameState(Board.zero, KeyboardInputs.Right)
 
   def handleKeypress(ev: KeyboardInputs): SnakeGameState => SnakeGameState = directionLens.set(ev)
 
   def tick(gs: SnakeGameState): SnakeGameState =
-    if(gs.isGameOver) gs
-    else if(gs.board.isSnakeAtFruit) {
+    if (gs.isGameOver) gs
+    else if (gs.board.isSnakeAtFruit) {
       eatFruit(gs)
     } else {
       val delta = directionDelta(gs.snakeDirection)
@@ -51,13 +51,13 @@ object SnakeGameState {
     snakeLens.modify { snake =>
       val tail = snake.init
       val newHead = (snake.head |+| delta) match {
-        case Coordinate(x, y) if(x < 0) => Coordinate(gs.boardSize-1, y)
-        case Coordinate(x, y) if(x >= gs.boardSize) => Coordinate(0, y)
-        case Coordinate(x, y) if(y < 0) => Coordinate(x, gs.boardSize-1)
-        case Coordinate(x, y) if(y >= gs.boardSize) => Coordinate(x, 0)
-        case c => c
+        case Coordinate(x, y) if (x < 0)             => Coordinate(gs.boardSize - 1, y)
+        case Coordinate(x, y) if (x >= gs.boardSize) => Coordinate(0, y)
+        case Coordinate(x, y) if (y < 0)             => Coordinate(x, gs.boardSize - 1)
+        case Coordinate(x, y) if (y >= gs.boardSize) => Coordinate(x, 0)
+        case c                                       => c
       }
-      
+
       newHead :: tail
     }(gs)
 

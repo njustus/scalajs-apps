@@ -11,21 +11,19 @@ enum Cell(val cssClasses: String) {
   }
 }
 
-case class Board(size: Int,
-                 fruit: Board.Fruit,
-                 snake: Board.Snake) {
+case class Board(size: Int, fruit: Board.Fruit, snake: Board.Snake) {
 
-  def eatenFruits: Int = scala.math.max(0, snake.size-2)
+  def eatenFruits: Int = scala.math.max(0, snake.size - 2)
 
   def isSnakeAtFruit: Boolean = snake.head == fruit
-  def detectGameOver: Boolean =  false // snake.size - snake.toSet.size > 1
+  def detectGameOver: Boolean = false // snake.size - snake.toSet.size > 1
 
   def grid: List[List[Cell]] =
     List.tabulate(size) { columnIdx =>
       List.tabulate(size) {
-        case rowIdx if fruit.isAt(columnIdx, rowIdx) => Cell.Fruit
+        case rowIdx if fruit.isAt(columnIdx, rowIdx)                 => Cell.Fruit
         case rowIdx if snake.contains(Coordinate(columnIdx, rowIdx)) => Cell.Snake
-        case _ => Cell.Empty
+        case _                                                       => Cell.Empty
       }
     }
 }
@@ -39,15 +37,15 @@ object Board {
     val snakeIdx = size / 2
     val fruitIdx = 12
 
-    val  snake = List(
+    val snake = List(
       Coordinate(snakeIdx, snakeIdx),
-      Coordinate(snakeIdx-1, snakeIdx)
+      Coordinate(snakeIdx - 1, snakeIdx)
     )
 
     val fruit = Coordinate(fruitIdx, snakeIdx)
     Board(size, fruit, snake)
   }
-  
+
   def newFruit(boardSize: Int): Fruit =
     Coordinate(
       scala.util.Random.between(0, boardSize),
