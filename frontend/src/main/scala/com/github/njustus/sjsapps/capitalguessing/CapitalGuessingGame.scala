@@ -77,7 +77,7 @@ object CapitalGuessingGame {
     values.zipWithIndex.map { (name, idx) =>
       val mod = valueModifier(name).getOrElse("")
 
-      <.div(^.key := idx, ^.className := s"cell $mod", ^.onClick --> onClick(name), name)
+      <.div(^.key := idx, ^.className := s"cell bg-cyan-500 $mod", ^.onClick --> onClick(name), name)
     }.toVdomArray
   }
 
