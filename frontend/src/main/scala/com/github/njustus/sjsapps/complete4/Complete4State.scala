@@ -5,6 +5,7 @@ import com.github.njustus.sjsapps.util.SeqUtils
 import cats.instances.all.*
 import cats.Id
 import com.github.njustus.sjsapps.complete4.Complete4State.CHIPS_NEEDDED_TO_WIN
+import wvlet.log.LogSupport
 
 enum PlayerColor {
   case Blue
@@ -41,7 +42,7 @@ case class Complete4State(
     players: List[Player],
     currentPlayersId: String,
     currentWinner: Option[Player]
-) {
+) extends LogSupport {
   require(players.exists(_.name == currentPlayersId), "expected 'currentPlayersId' to be one of player's name")
 
   private def isWinner(columnIdx: Int): Option[Player] = {
@@ -57,7 +58,7 @@ case class Complete4State(
     val updatedColumns = chipColumns.zipWithIndex.map {
       case (column, idx) if idx == columnIdx =>
         val firstEmptyChipIndex = column.indexWhere(chip => chip.isEmpty)
-        println(s"updating row: $idx and chipIdx $firstEmptyChipIndex to $color")
+        info(s"updating row: $idx and chipIdx $firstEmptyChipIndex to $color")
 
         if (firstEmptyChipIndex < 0) column
         else {
