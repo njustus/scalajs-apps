@@ -6,7 +6,7 @@ val scalaTestVersion = "3.2.17"
 val monocleVersion = "3.2.0"
 
 lazy val commonSettings = Seq(
-  scalaVersion := "3.3.1",
+  scalaVersion := "3.4.2",
   scalacOptions ++= Seq(),
   libraryDependencies ++= Seq(
       "org.scalactic" %%% "scalactic" % scalaTestVersion % "test",
