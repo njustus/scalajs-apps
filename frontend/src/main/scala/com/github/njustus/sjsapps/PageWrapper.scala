@@ -8,10 +8,11 @@ import com.github.njustus.sjsapps.tippscalculator.TippsCalculator
 import com.github.njustus.sjsapps.memory.Memory
 import com.github.njustus.sjsapps.notes.NotesWrapper
 import com.github.njustus.sjsapps.snake.{SnakeGame, SnakeGameWrapper}
+import com.github.njustus.sjsapps.tetris.TetrisWrapper
 import japgolly.scalajs.react.*
 import japgolly.scalajs.react.vdom.*
 import japgolly.scalajs.react.vdom.html_<^.*
-import japgolly.scalajs.react.extra.router.{given, *}
+import japgolly.scalajs.react.extra.router.{*, given}
 import japgolly.scalajs.react.vdom.Implicits.*
 import japgolly.scalajs.react.extra.router.Redirect
 import japgolly.scalajs.react.extra.router.Redirect
@@ -62,7 +63,7 @@ object PageWrapper {
 
   private val component = ScalaFnComponent
     .withHooks[Props]
-    .useStateBy(props => State("Snake Game"))
+    .useStateBy(props => State("Tetris"))
     .render(renderFn)
 
   def build() = {
@@ -76,6 +77,7 @@ object PageWrapper {
         Page("Complete 4", Complete4Board.component),
         Page("Capital Game", GuessingGameWrapper.component),
         Page("Snake Game", SnakeGameWrapper.component),
+        Page("Tetris", TetrisWrapper.component),
         Page("Notes", NotesWrapper.component)
       )
     )
