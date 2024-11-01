@@ -11,14 +11,14 @@ import com.github.njustus.sjsapps.snake.{SnakeGame, SnakeGameWrapper}
 import japgolly.scalajs.react.*
 import japgolly.scalajs.react.vdom.*
 import japgolly.scalajs.react.vdom.html_<^.*
-import japgolly.scalajs.react.extra.router.{given,*}
-import japgolly.scalajs.react.vdom.Implicits.* 
+import japgolly.scalajs.react.extra.router.{given, *}
+import japgolly.scalajs.react.vdom.Implicits.*
 import japgolly.scalajs.react.extra.router.Redirect
 import japgolly.scalajs.react.extra.router.Redirect
 
 object PageWrapper {
-  case class Page(name: String, component:PageComponent) {
-    val link = "/"+name.toLowerCase().replace(" ", "-")
+  case class Page(name: String, component: PageComponent) {
+    val link = "/" + name.toLowerCase().replace(" ", "-")
   }
 
   case class Props(pages: List[Page]) {
@@ -43,12 +43,10 @@ object PageWrapper {
     lazy val router = Router(BaseUrl.fromWindowOrigin, routerConfig.logToConsole)
   }
 
-
   case class State(selectedKey: String)
 
   private def renderFn(props: Props, state: Hooks.UseState[State]): VdomNode = {
     val menuItems = props.pages.map { page =>
-
       <.li(^.key := page.name, <.a(^.href := page.link, page.name))
     }
 
@@ -70,15 +68,15 @@ object PageWrapper {
   def build() = {
     val p = Props(
       List(
-        Page("Tips Calculator"   , TippsCalculator.component),
-        Page("Income Calculator" , IncomeCalculator.component),
-        Page("Memory"            , Memory.component),
-        Page("Form"              , FormExample.component),
-        Page("Kanban"            , BoardComponent.component),
-        Page("Complete 4"        , Complete4Board.component),
-        Page("Capital Game"      , GuessingGameWrapper.component),
-        Page("Snake Game"        , SnakeGameWrapper.component),
-        Page("Notes"             , NotesWrapper.component)
+        Page("Tips Calculator", TippsCalculator.component),
+        Page("Income Calculator", IncomeCalculator.component),
+        Page("Memory", Memory.component),
+        Page("Form", FormExample.component),
+        Page("Kanban", BoardComponent.component),
+        Page("Complete 4", Complete4Board.component),
+        Page("Capital Game", GuessingGameWrapper.component),
+        Page("Snake Game", SnakeGameWrapper.component),
+        Page("Notes", NotesWrapper.component)
       )
     )
 
