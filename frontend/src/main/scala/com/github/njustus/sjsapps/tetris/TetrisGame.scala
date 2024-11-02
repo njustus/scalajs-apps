@@ -13,17 +13,21 @@ import scala.language.postfixOps
 object TetrisGame {
 
   case class Props(tickSpeed: Duration = 0.5 second)
-  type State = TetrisState
+  type State = TetrisBoardState
 
   private def renderFn(props: Props, state: Hooks.UseState[State]): VdomNode = {
     <.div(^.className := "tetris-game flex",
-      <.div(^.className := "w-3/4 board grow border border-red-400"),
+      <.div(^.className := "w-3/4 board grow border border-red-400",
+        TetrisBoard.render(state.value.board)
+      ),
       <.div(^.className := "score-details grow border border-blue-400")
     )
   }
 
-  val component = ScalaFnComponent
+  def render(): VdomNode = component(TetrisGame.Props())
+  
+  private val component = ScalaFnComponent
     .withHooks[Props]
-    .useState(TetrisState.zero)
+    .useState(TetrisBoardState.zero)
     .render(renderFn)
 }

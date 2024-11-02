@@ -13,7 +13,7 @@ object TetrisWrapper {
   type State = Unit
 
   private def renderFn(props: Props, state: Hooks.UseState[State]): VdomNode = {
-    TetrisGame.component(TetrisGame.Props())
+    TetrisGame.render()
   }
 
   val component = ScalaFnComponent.withHooks[Props]

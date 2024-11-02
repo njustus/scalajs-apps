@@ -9,14 +9,21 @@ import org.scalajs.dom
 
 object TetrisBoard {
 
-  type Props = Unit
+  case class Props(board: List[List[TetrisCell]])
   type State = Unit
 
-  private def renderFn(props: Props, state: Hooks.UseState[State]): VdomNode = {
-    <.div("test")
+  private def renderFn(props: Props): VdomNode = {
+    props.board.zipWithIndex.map { (row, rowIdx) =>
+      <.div(^.className := "flex", ^.key := "row-"+rowIdx,
+        row.zipWithIndex.map { (cell, colIdx) =>
+          <.div(^.className := "flex cell", ^.key := "col-"+colIdx)
+        }.toVdomArray
+      )
+    }.toVdomArray
   }
 
-  val component = ScalaFnComponent.withHooks[Props]
-    .useState(())
+  def render(board: List[List[TetrisCell]]): VdomNode = component(Props(board))
+
+  private val component = ScalaFnComponent.withHooks[Props]
     .render(renderFn)
 }

@@ -1,0 +1,12 @@
+.tetris-game {
+  height: 200px;
+
+  & .board {
+    & .cell {
+      width: 20px;
+      height: 20px;
+      //background-color: darkcyan;
+      border: 2px darkcyan solid;
+    }
+  }
+}
