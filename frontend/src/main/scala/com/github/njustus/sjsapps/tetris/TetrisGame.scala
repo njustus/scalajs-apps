@@ -9,6 +9,7 @@ import org.scalajs.dom
 import scala.concurrent.duration.Duration
 import scala.concurrent.duration.*
 import scala.language.postfixOps
+import com.github.njustus.sjsapps.shared.*
 
 object TetrisGame {
 
@@ -18,7 +19,7 @@ object TetrisGame {
   private def renderFn(props: Props, state: Hooks.UseState[State]): VdomNode = {
     <.div(^.className := "tetris-game flex",
       <.div(^.className := "w-3/4 board grow",
-        TetrisBoard.render(state.value.board)
+        TetrisBoard.render(state.value.renderedBoard)
       ),
       <.div(^.className := "score-details grow")
     )
@@ -29,5 +30,23 @@ object TetrisGame {
   private val component = ScalaFnComponent
     .withHooks[Props]
     .useState(TetrisBoardState.zero)
+        .useEffectOnMountBy { (props, state) =>
+      SyncIO {
+        dom.window.setInterval(
+          () => state.modState(TetrisBoardState.tick).unsafeRunSync(),
+          props.tickSpeed.toMillis
+        )
+
+        dom.window.addEventListener(
+          "keydown",
+          (ev: SyntheticKeyboardEvent[?]) => {
+            KeyboardInputs.fromKeyBoardEvent(ev).foreach { key =>
+              println(s"key $key")
+//              state.modState(SnakeGameState.handleKeypress(key)).unsafeRunSync()
+            }
+          }
+        )
+      }
+    }
     .render(renderFn)
 }

@@ -1,9 +1,17 @@
 package com.github.njustus.sjsapps.tetris
 
 import com.github.njustus.sjsapps.shared.Coordinate
+import cats.syntax.semigroup.*
+import com.github.njustus.sjsapps.tetris.TetrisColor.Green
 
 case class TetrisPiece(coordinates: List[Coordinate], color: TetrisColor) {
+  def withDelta(c: Coordinate): TetrisPiece = this.copy(
+    coordinates = coordinates.map { origin =>
+      origin |+| c
+    }
+  )
 
+  def contains(c: Coordinate): Boolean = coordinates.toSet.contains(c)
 }
 
 enum TetrisColor {
@@ -23,7 +31,18 @@ enum TetrisCell {
   }
 }
 
-case class TetrisBoardState(board: List[List[TetrisCell]])
+case class TetrisBoardState(board: List[List[TetrisCell]], currentPiece: Option[TetrisPiece]) {
+  lazy val renderedBoard: List[List[TetrisCell]] = board.zipWithIndex.map { (row, rowIdx) =>
+    row.zipWithIndex.map {
+//      case (tc@TetrisCell.Colored, _) => tc
+      case (TetrisCell.Empty, colIdx) =>
+        currentPiece
+          .filter { piece => piece.contains(colIdx -> rowIdx) }
+          .map{ it => TetrisCell.Colored(it.color) }
+        .getOrElse(TetrisCell.Empty)
+    }
+  }
+}
 
 object TetrisBoardState {
   private val WIDTH  = 20
@@ -31,16 +50,19 @@ object TetrisBoardState {
 
   def zero: TetrisBoardState = {
     val board = List.tabulate(HEIGHT) { _ =>
-      List.tabulate(WIDTH) {
-        case 1 => TetrisCell.Colored(TetrisColor.Red)
-        case 2 => TetrisCell.Colored(TetrisColor.Blue)
-        case 3 => TetrisCell.Colored(TetrisColor.Green)
-        case 4 => TetrisCell.Colored(TetrisColor.Yellow)
-        case _ => TetrisCell.Empty
+      List.tabulate(WIDTH) { _ => TetrisCell.Empty
       }
     }
 
-    TetrisBoardState(board)
+    TetrisBoardState(board, None)
+  }
+
+  def tick(state: TetrisBoardState): TetrisBoardState = {
+    val piece = state.currentPiece.getOrElse(square(Green))
+      .withDelta(0 -> 1)
+
+    // TODO: out-of-range; collision check 
+    state.copy(currentPiece = Some(piece))
   }
 
   private def piece(coordinates: Coordinate*): TetrisColor => TetrisPiece = TetrisPiece(coordinates.toList, _)
