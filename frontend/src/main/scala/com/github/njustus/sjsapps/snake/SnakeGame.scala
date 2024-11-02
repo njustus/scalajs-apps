@@ -70,7 +70,7 @@ object SnakeGame {
 
         dom.window.addEventListener(
           "keydown",
-          (ev: SyntheticKeyboardEvent[_]) => {
+          (ev: SyntheticKeyboardEvent[?]) => {
             KeyboardInputs.fromKeyBoardEvent(ev).foreach { key =>
               println(s"key $key")
               state.modState(SnakeGameState.handleKeypress(key)).unsafeRunSync()

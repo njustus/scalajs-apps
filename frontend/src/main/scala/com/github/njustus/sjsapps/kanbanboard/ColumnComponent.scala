@@ -17,7 +17,7 @@ object ColumnComponent {
 
   private case class State(draggedTicket: Option[Ticket] = None)
 
-  private def renderTicket(onDragStart: Ticket => SyntheticDragEvent[_] => IO[Unit])(ticket: Ticket): VdomNode = {
+  private def renderTicket(onDragStart: Ticket => SyntheticDragEvent[?] => IO[Unit])(ticket: Ticket): VdomNode = {
     <.div(
       ^.className := "panel-block card",
       ^.draggable := true,
@@ -28,14 +28,14 @@ object ColumnComponent {
 
   private def renderFn(props: Props, state: Hooks.UseState[State]): VdomNode = {
     val onDragStart = (draggedTicket: Ticket) =>
-      (ev: SyntheticDragEvent[_]) => {
+      (ev: SyntheticDragEvent[?]) => {
         println(s"going to drag ticket: $draggedTicket")
         IO {
           ev.dataTransfer.setData("text", draggedTicket.id)
         }
       }
 
-    val onDragStop = (ev: SyntheticDragEvent[_]) => {
+    val onDragStop = (ev: SyntheticDragEvent[?]) => {
       ev.preventDefault()
       val ticketId = ev.dataTransfer.getData("text")
       props.changeTicketState(props.state, ticketId)
@@ -44,7 +44,7 @@ object ColumnComponent {
     <.div(
       ^.className := "column panel",
       ^.onDrop ==> onDragStop,
-      ^.onDragOver ==> ((ev: SyntheticDragEvent[_]) => IO { ev.preventDefault() }),
+      ^.onDragOver ==> ((ev: SyntheticDragEvent[?]) => IO { ev.preventDefault() }),
       <.div(^.className := "panel-heading", props.state.toString),
       props.tickets.map(renderTicket(onDragStart)).toVdomArray
     )

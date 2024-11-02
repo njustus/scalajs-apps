@@ -24,6 +24,6 @@ object KeyboardInputs {
       kInput.keyCodes.contains(keyCode)
     }
 
-  def fromKeyBoardEvent(ev: SyntheticKeyboardEvent[_]): Option[KeyboardInputs] =
+  def fromKeyBoardEvent(ev: SyntheticKeyboardEvent[?]): Option[KeyboardInputs] =
     fromKeyCode(ev.keyCode)
 }
