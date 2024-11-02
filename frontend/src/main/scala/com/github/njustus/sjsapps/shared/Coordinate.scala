@@ -13,4 +13,8 @@ object Coordinate {
     override def combine(c1: Coordinate, c2: Coordinate): Coordinate =
       Coordinate(c1.x + c2.x, c1.y + c2.y)
   }
+  
+  given Conversion[(Int, Int), Coordinate] with {
+    override def apply(x: (Int, Int)): Coordinate = Coordinate(x._1, x._2)
+  }
 }

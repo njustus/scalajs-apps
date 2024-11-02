@@ -17,15 +17,15 @@ object TetrisGame {
 
   private def renderFn(props: Props, state: Hooks.UseState[State]): VdomNode = {
     <.div(^.className := "tetris-game flex",
-      <.div(^.className := "w-3/4 board grow border border-red-400",
+      <.div(^.className := "w-3/4 board grow",
         TetrisBoard.render(state.value.board)
       ),
-      <.div(^.className := "score-details grow border border-blue-400")
+      <.div(^.className := "score-details grow")
     )
   }
 
   def render(): VdomNode = component(TetrisGame.Props())
-  
+
   private val component = ScalaFnComponent
     .withHooks[Props]
     .useState(TetrisBoardState.zero)

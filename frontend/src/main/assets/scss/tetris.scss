@@ -5,8 +5,20 @@
     & .cell {
       width: 20px;
       height: 20px;
-      //background-color: darkcyan;
-      border: 2px darkcyan solid;
+      border: 1px black solid;
+
+      &--red {
+        @apply bg-red-400 border-2 border-red-500 rounded;
+      }
+      &--blue {
+        @apply bg-blue-400 border-2 border-blue-500 rounded;
+      }
+      &--yellow {
+        @apply bg-yellow-400 border-2 border-yellow-500 rounded;
+      }
+      &--green {
+        @apply bg-green-400 border-2 border-green-500 rounded;
+      }
     }
   }
 }

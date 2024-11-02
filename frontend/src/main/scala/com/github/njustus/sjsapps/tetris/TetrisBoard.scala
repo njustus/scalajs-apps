@@ -16,7 +16,7 @@ object TetrisBoard {
     props.board.zipWithIndex.map { (row, rowIdx) =>
       <.div(^.className := "flex", ^.key := "row-"+rowIdx,
         row.zipWithIndex.map { (cell, colIdx) =>
-          <.div(^.className := "flex cell", ^.key := "col-"+colIdx)
+          <.div(^.className := s"flex cell ${cell.cssClass}", ^.key := "col-"+colIdx)
         }.toVdomArray
       )
     }.toVdomArray
