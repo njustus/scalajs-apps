@@ -1,4 +1,4 @@
-package com.github.njustus.sjsapps.snake
+package com.github.njustus.sjsapps.shared
 
 import japgolly.scalajs.react.facade.SyntheticKeyboardEvent
 import org.scalajs.dom.console
@@ -9,6 +9,12 @@ enum KeyboardInputs(val keyCodes: Int*) {
   case Left  extends KeyboardInputs(37, 65)
   case Right extends KeyboardInputs(39, 68)
 
+  def delta: Coordinate = this match {
+    case KeyboardInputs.Up    => Coordinate(0, -1)
+    case KeyboardInputs.Down  => Coordinate(0, 1)
+    case KeyboardInputs.Left  => Coordinate(-1, 0)
+    case KeyboardInputs.Right => Coordinate(1, 0)
+  }
 }
 
 object KeyboardInputs {

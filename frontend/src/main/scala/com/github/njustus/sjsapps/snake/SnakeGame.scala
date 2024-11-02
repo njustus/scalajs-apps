@@ -11,6 +11,7 @@ import org.scalajs.dom.{Window, console}
 import scala.concurrent.duration.Duration
 import scala.concurrent.duration.*
 import scala.language.postfixOps
+import com.github.njustus.sjsapps.shared.*
 
 object SnakeGame {
 

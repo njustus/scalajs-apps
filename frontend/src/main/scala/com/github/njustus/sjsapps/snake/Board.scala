@@ -1,5 +1,7 @@
 package com.github.njustus.sjsapps.snake
 
+import com.github.njustus.sjsapps.shared.*
+
 enum Cell(val cssClasses: String) {
   case Empty extends Cell("")
   case Snake extends Cell("cell-snake")

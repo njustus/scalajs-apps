@@ -1,6 +1,5 @@
 package com.github.njustus.sjsapps.snake
 
-import Coordinate.given
 import cats.syntax.monoid.*
 import monocle.Lens
 
@@ -8,6 +7,7 @@ import scala.concurrent.duration.Duration
 import scala.concurrent.duration.*
 import scala.language.postfixOps
 import monocle.macros.GenLens
+import com.github.njustus.sjsapps.shared.{*, given}
 
 case class SnakeGameState(
     board: Board,
@@ -61,10 +61,5 @@ object SnakeGameState {
       newHead :: tail
     }(gs)
 
-  private def directionDelta(input: KeyboardInputs): Coordinate = input match {
-    case KeyboardInputs.Up    => Coordinate(0, -1)
-    case KeyboardInputs.Down  => Coordinate(0, 1)
-    case KeyboardInputs.Left  => Coordinate(-1, 0)
-    case KeyboardInputs.Right => Coordinate(1, 0)
-  }
+  private def directionDelta(input: KeyboardInputs): Coordinate = input.delta
 }

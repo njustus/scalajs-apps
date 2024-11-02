@@ -1,4 +1,4 @@
-package com.github.njustus.sjsapps.snake
+package com.github.njustus.sjsapps.shared
 
 import cats.kernel.Monoid
 
