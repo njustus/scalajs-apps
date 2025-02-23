@@ -1,6 +1,6 @@
 package com.github.njustus.sjsapps.tetris
 
-import com.github.njustus.sjsapps.shared.Coordinate
+import com.github.njustus.sjsapps.shared.{Coordinate, KeyboardInputs}
 import cats.syntax.semigroup.*
 import com.github.njustus.sjsapps.tetris.TetrisColor.{Green, Yellow}
 
@@ -42,6 +42,14 @@ case class TetrisBoardState(board: List[List[TetrisCell]], currentPiece: Option[
         .getOrElse(TetrisCell.Empty)
     }
   }
+  
+  def movePiece(delta: Coordinate): TetrisBoardState = {
+    val newPiece = currentPiece.map { piece =>
+      piece.withDelta(delta)
+    }
+
+    this.copy(currentPiece = newPiece)
+  }
 }
 
 object TetrisBoardState {
@@ -58,13 +66,19 @@ object TetrisBoardState {
   }
 
   def tick(state: TetrisBoardState): TetrisBoardState = {
-    val piece = state.currentPiece.getOrElse(pieceT(Green))
+    val piece = state.currentPiece.getOrElse(pieceL(Green))
       .withDelta(0 -> 1)
 
     // TODO: out-of-range; collision check
     state.copy(currentPiece = Some(piece))
   }
 
+  def handleKeypress(ev: KeyboardInputs)(state: TetrisBoardState): TetrisBoardState = ev match {
+    case KeyboardInputs.Left => state.movePiece(ev.delta)
+    case KeyboardInputs.Right => state.movePiece(ev.delta)
+    case _ => state //unused
+  }
+  
   private def piece(coordinates: Coordinate*): TetrisColor => TetrisPiece = TetrisPiece(coordinates.toList, _)
 
   val pieceO: TetrisColor => TetrisPiece = piece(

@@ -6,10 +6,12 @@ import monocle.Focus
 import cats.effect.{IO, SyncIO}
 import japgolly.scalajs.react.facade.*
 import org.scalajs.dom
+
 import scala.concurrent.duration.Duration
 import scala.concurrent.duration.*
 import scala.language.postfixOps
 import com.github.njustus.sjsapps.shared.*
+import com.github.njustus.sjsapps.snake.SnakeGameState
 
 object TetrisGame {
 
@@ -42,7 +44,7 @@ object TetrisGame {
           (ev: SyntheticKeyboardEvent[?]) => {
             KeyboardInputs.fromKeyBoardEvent(ev).foreach { key =>
               println(s"key $key")
-//              state.modState(SnakeGameState.handleKeypress(key)).unsafeRunSync()
+              state.modState(TetrisBoardState.handleKeypress(key)).unsafeRunSync()
             }
           }
         )
