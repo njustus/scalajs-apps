@@ -4,6 +4,7 @@ import japgolly.scalajs.react.*
 import japgolly.scalajs.react.vdom.html_<^.*
 import monocle.Focus
 import cats.effect.{IO, SyncIO}
+import com.github.njustus.sjsapps.tetris.models.TetrisCell
 import japgolly.scalajs.react.facade.*
 import org.scalajs.dom
 
