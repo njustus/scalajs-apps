@@ -34,7 +34,7 @@ enum TetrisCell {
   }
 }
 
-case class TetrisBoardState(board: List[List[TetrisCell]], currentPiece: Option[TetrisPiece]) {
+case class TetrisBoardState(board: List[List[TetrisCell]], currentPiece: TetrisPiece) {
   private val height = board.size
   private val width = board.head.size
 
@@ -42,25 +42,30 @@ case class TetrisBoardState(board: List[List[TetrisCell]], currentPiece: Option[
     row.zipWithIndex.map {
 //      case (tc@TetrisCell.Colored, _) => tc
       case (TetrisCell.Empty, colIdx) =>
-        currentPiece
-          .filter { piece => piece.contains(colIdx -> rowIdx) }
-          .map{ it => TetrisCell.Colored(it.color) }
-        .getOrElse(TetrisCell.Empty)
+        if(currentPiece.contains(colIdx -> rowIdx))
+          TetrisCell.Colored(currentPiece.color)
+        else TetrisCell.Empty
     }
   }
 
   def movePiece(delta: Coordinate): TetrisBoardState = {
-    val newPiece = currentPiece.map { piece =>
-      piece.withDelta(delta)
-    }
+    val newPiece = currentPiece.withDelta(delta)
 
-    this.copy(currentPiece = newPiece)
+    if(isPieceWithinBounds(newPiece))
+      this.copy(currentPiece = newPiece)
+    else this
   }
 
-  def isFree(c: Coordinate): Boolean =
+  private def isFree(c: Coordinate): Boolean =
     (c.y >= 0 && c.y < height) &&
       (c.x >= 0 && c.x < width) &&
       (board(c.y)(c.x) == Empty)
+
+
+  def isPieceWithinBounds(piece: TetrisPiece): Boolean = piece.forall { c =>
+    println(s"coordinate: $c free: ${isFree(c)}")
+    isFree(c)
+  }
 }
 
 object TetrisBoardState {
@@ -73,21 +78,16 @@ object TetrisBoardState {
       }
     }
 
-    TetrisBoardState(board, None)
+    TetrisBoardState(board, pieceL(Green))
   }
 
   def tick(state: TetrisBoardState): TetrisBoardState = {
-    val piece = state.currentPiece.getOrElse(pieceL(Green))
+    val piece = state.currentPiece
       .withDelta(0 -> 1)
 
-    val isPieceWithinBounds = piece.forall { c =>
-      println(s"coordinate: $c free: ${state.isFree(c)}")
-      state.isFree(c)
-    }
-
     // TODO: out-of-range; collision check
-    if(isPieceWithinBounds)
-      state.copy(currentPiece = Some(piece))
+    if(state.isPieceWithinBounds(piece))
+      state.copy(currentPiece = piece)
     else state
   }
 
